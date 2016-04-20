@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/icare.iml" filepath="$PROJECT_DIR$/icare.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-cache/icare-cache.iml" filepath="$PROJECT_DIR$/icare-cache/icare-cache.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-common/icare-common.iml" filepath="$PROJECT_DIR$/icare-common/icare-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-dao/icare-dao.iml" filepath="$PROJECT_DIR$/icare-dao/icare-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-doctor-dao/icare-doctor-dao.iml" filepath="$PROJECT_DIR$/icare-doctor-dao/icare-doctor-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-doctor-service/icare-doctor-service.iml" filepath="$PROJECT_DIR$/icare-doctor-service/icare-doctor-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-doctor-web/icare-doctor-web.iml" filepath="$PROJECT_DIR$/icare-doctor-web/icare-doctor-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-home-dao/icare-home-dao.iml" filepath="$PROJECT_DIR$/icare-home-dao/icare-home-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-home-service/icare-home-service.iml" filepath="$PROJECT_DIR$/icare-home-service/icare-home-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-home-web/icare-home-web.iml" filepath="$PROJECT_DIR$/icare-home-web/icare-home-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-mapp/icare-mapp.iml" filepath="$PROJECT_DIR$/icare-mapp/icare-mapp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-patient-dao/icare-patient-dao.iml" filepath="$PROJECT_DIR$/icare-patient-dao/icare-patient-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-patient-service/icare-patient-service.iml" filepath="$PROJECT_DIR$/icare-patient-service/icare-patient-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-patient-web/icare-patient-web.iml" filepath="$PROJECT_DIR$/icare-patient-web/icare-patient-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-recover-dao/icare-recover-dao.iml" filepath="$PROJECT_DIR$/icare-recover-dao/icare-recover-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-recover-service/icare-recover-service.iml" filepath="$PROJECT_DIR$/icare-recover-service/icare-recover-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-recover-web/icare-recover-web.iml" filepath="$PROJECT_DIR$/icare-recover-web/icare-recover-web.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-service/icare-service.iml" filepath="$PROJECT_DIR$/icare-service/icare-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-vfs-dao/icare-vfs-dao.iml" filepath="$PROJECT_DIR$/icare-vfs-dao/icare-vfs-dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-vfs-service/icare-vfs-service.iml" filepath="$PROJECT_DIR$/icare-vfs-service/icare-vfs-service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-wechat/icare-wechat.iml" filepath="$PROJECT_DIR$/icare-wechat/icare-wechat.iml" />
+      <module fileurl="file://$PROJECT_DIR$/icare-wechat-web/icare-wechat-web.iml" filepath="$PROJECT_DIR$/icare-wechat-web/icare-wechat-web.iml" />
+    </modules>
+  </component>
+</project>
