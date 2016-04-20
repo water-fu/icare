@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="icare-recover-web:war">
+    <output-path>$PROJECT_DIR$/icare-recover-web/target</output-path>
+    <root id="archive" name="icare-recover-web-0.0.1-SNAPSHOT.war">
+      <element id="artifact" artifact-name="icare-recover-web:war exploded" />
+    </root>
+  </artifact>
+</component>

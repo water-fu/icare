@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-cache" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-common" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-doctor-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-doctor-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-doctor-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-home-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-home-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-home-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-mapp" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-patient-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-patient-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-patient-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-recover-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-recover-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-recover-web" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-vfs-dao" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-vfs-service" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-wechat" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/icare-wechat-web" charset="UTF-8" />
+    <file url="PROJECT" charset="UTF-8" />
+  </component>
+</project>

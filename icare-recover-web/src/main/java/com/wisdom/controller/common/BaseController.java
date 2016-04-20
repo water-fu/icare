@@ -1,0 +1,100 @@
+package com.wisdom.controller.common;
+
+import com.wisdom.constants.SysParamDetailConstant;
+import com.wisdom.entity.ResultBean;
+import com.wisdom.exception.ApplicationException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.web.bind.WebDataBinder;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.context.request.WebRequest;
+
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+
+/**
+ *
+ * Created by fusj on 16/3/2.
+ */
+public class BaseController {
+
+    private static final Logger logger = LoggerFactory.getLogger(BaseController.class);
+
+    /**
+     * 异常处理
+     * @param request
+     * @param ex
+     * @return
+     * @throws Exception
+     */
+    @ExceptionHandler
+    public String doHandle(HttpServletRequest request, Exception ex) throws Exception {
+
+        logger.error(ex.getMessage(), ex);
+
+        request.setAttribute("ex", ex);
+
+        if (request.getHeader("x-requested-with") != null) {
+            throw ex;
+        }
+
+        return "error/500";
+    }
+
+    /**
+     * VO绑定处理
+     * @param binder
+     * @param request
+     */
+    @InitBinder
+    public void initBinder(WebDataBinder binder, WebRequest request) {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateFormat.setLenient(false);
+
+        SimpleDateFormat datetimeFormat = new SimpleDateFormat(
+                "yyyy-MM-dd");
+        datetimeFormat.setLenient(false);
+
+        binder.registerCustomEditor(java.util.Date.class, new CustomDateEditor(
+                dateFormat, true));
+        binder.registerCustomEditor(java.sql.Timestamp.class,
+                new CustomTimestampEditor(datetimeFormat, true));
+    }
+
+    /**
+     * ajax请求异常返回
+     * @param ex
+     * @return
+     */
+    protected ResultBean ajaxException(Exception ex) {
+        logger.error(ex.getMessage(), ex);
+
+        ResultBean resultBean = new ResultBean(false);
+
+        if(ex instanceof ApplicationException) {
+            resultBean.setMsg(ex.getMessage());
+        } else {
+            resultBean.setMsg("系统出错了");
+        }
+
+        return resultBean;
+    }
+
+    /**
+     * 根据type转换用户类型
+     * @param type
+     * @return
+     */
+    protected String transType(String type) {
+        switch (type) {
+            case SysParamDetailConstant.ACCOUNT_TYPE_PATIENT:
+                return "patient";
+            case SysParamDetailConstant.ACCOUNT_TYPE_RECOVER:
+                return "recover";
+            default:
+                return type;
+        }
+    }
+}
