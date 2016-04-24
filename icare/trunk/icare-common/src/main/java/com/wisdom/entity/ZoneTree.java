@@ -11,7 +11,7 @@ import java.util.List;
  * Created by fusj on 16/3/14.
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class Tree implements Serializable {
+public class ZoneTree implements Serializable {
     // 显示内容
     private String text;
 
@@ -28,7 +28,7 @@ public class Tree implements Serializable {
     private String simplePinyin;
 
     // 子节点
-    private List<Tree> nodes;
+    private List<ZoneTree> nodes;
 
     public String getText() {
         return text;
@@ -70,11 +70,11 @@ public class Tree implements Serializable {
         this.level = level;
     }
 
-    public List<Tree> getNodes() {
+    public List<ZoneTree> getNodes() {
         return nodes;
     }
 
-    public void setNodes(List<Tree> nodes) {
+    public void setNodes(List<ZoneTree> nodes) {
         this.nodes = nodes;
     }
 }

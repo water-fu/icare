@@ -16,11 +16,25 @@ public class SystemSetting {
     @Value("#{propertiesReader['system.productionMode']}")
     private Boolean productionMode;
 
+    /**
+     * 系统适用省份
+     */
+    @Value("#{propertiesReader['system.country']}")
+    private String country;
+
     public Boolean getProductionMode() {
         return productionMode;
     }
 
     public void setProductionMode(Boolean productionMode) {
         this.productionMode = productionMode;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
     }
 }
