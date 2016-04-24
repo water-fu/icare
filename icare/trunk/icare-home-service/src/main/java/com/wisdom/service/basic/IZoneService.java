@@ -2,7 +2,8 @@ package com.wisdom.service.basic;
 
 import com.wisdom.dao.entity.Zone;
 import com.wisdom.entity.PageInfo;
-import com.wisdom.entity.Tree;
+import com.wisdom.entity.ZoneSelect;
+import com.wisdom.entity.ZoneTree;
 
 import java.util.List;
 
@@ -23,13 +24,13 @@ public interface IZoneService {
      * 初始化行政区域树
      * @return
      */
-    List<Tree> initData();
+    List<ZoneTree> initData();
 
     /**
      * 新增
      * @param zone
      */
-    void add(Zone zone);
+    Zone add(Zone zone);
 
     /**
      * 根据主键获取
@@ -42,7 +43,7 @@ public interface IZoneService {
      * 修改保存
      * @param zone
      */
-    void modify(Zone zone);
+    Zone modify(Zone zone);
 
     /**
      * 删除

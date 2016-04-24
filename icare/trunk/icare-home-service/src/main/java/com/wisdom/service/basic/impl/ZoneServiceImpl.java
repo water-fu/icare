@@ -1,17 +1,24 @@
 package com.wisdom.service.basic.impl;
 
+import com.wisdom.cache.CommonCache;
+import com.wisdom.constants.CacheNameConstant;
+import com.wisdom.constants.CommonConstant;
 import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.dao.entity.Zone;
 import com.wisdom.dao.entity.ZoneExample;
 import com.wisdom.dao.mapper.ZoneMapper;
 import com.wisdom.entity.PageInfo;
-import com.wisdom.entity.Tree;
+import com.wisdom.entity.ZoneSelect;
+import com.wisdom.entity.ZoneTree;
 import com.wisdom.service.basic.IZoneService;
 import com.wisdom.util.DateUtil;
 import com.wisdom.util.Pinyin4jUtil;
 import com.wisdom.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +35,9 @@ public class ZoneServiceImpl implements IZoneService {
 
     @Autowired
     private ZoneMapper zoneMapper;
+
+    @Autowired
+    private CommonCache commonCache;
 
     /**
      * 分页数据
@@ -82,7 +92,7 @@ public class ZoneServiceImpl implements IZoneService {
      * @return
      */
     @Override
-    public List<Tree> initData() {
+    public List<ZoneTree> initData() {
 
         return iterator("0");
     }
@@ -91,8 +101,9 @@ public class ZoneServiceImpl implements IZoneService {
      * 新增
      * @param zone
      */
+    @CachePut(value = CacheNameConstant.ZONE_CACHE, key = "#zone.code")
     @Override
-    public void add(Zone zone) {
+    public Zone add(Zone zone) {
         Zone parentZone = zoneMapper.selectByPrimaryKey(Integer.parseInt(zone.getParentId()));
 
         zone.setLevel((Integer.parseInt(parentZone.getLevel()) + 1) + "");
@@ -101,6 +112,10 @@ public class ZoneServiceImpl implements IZoneService {
         zone.setCreateTime(DateUtil.getTimestamp());
 
         zoneMapper.insertSelective(zone);
+
+        commonCache.evict(CommonConstant.ZONE_SELECT_CACHE_VALUE);
+
+        return zone;
     }
 
     /**
@@ -119,22 +134,30 @@ public class ZoneServiceImpl implements IZoneService {
      * 修改保存
      * @param zone
      */
+    @CachePut(value = CacheNameConstant.ZONE_CACHE, key = "#zone.code")
     @Override
-    public void modify(Zone zone) {
+    public Zone modify(Zone zone) {
         zone.setSimplePinyin(Pinyin4jUtil.translate(zone.getName(), Pinyin4jUtil.RET_PINYIN_TYPE_HEADCHAR));
 
         zoneMapper.updateByPrimaryKeySelective(zone);
+
+        commonCache.evict(CommonConstant.ZONE_SELECT_CACHE_VALUE);
+
+        return zoneMapper.selectByPrimaryKey(zone.getId());
     }
 
     /**
      * 删除
      * @param zone
      */
+    @CacheEvict(value = CacheNameConstant.ZONE_CACHE, key = "#zone.code")
     @Override
     public void delete(Zone zone) {
         zone.setIsDel(SysParamDetailConstant.IS_DEL_TRUE);
 
         zoneMapper.updateByPrimaryKeySelective(zone);
+
+        commonCache.evict(CommonConstant.ZONE_SELECT_CACHE_VALUE);
     }
 
     /**
@@ -142,7 +165,7 @@ public class ZoneServiceImpl implements IZoneService {
      * @param parentId
      * @return
      */
-    private List<Tree> iterator(String parentId) {
+    private List<ZoneTree> iterator(String parentId) {
         ZoneExample example = new ZoneExample();
         example.createCriteria().andParentIdEqualTo(parentId)
                 .andIsDelEqualTo(SysParamDetailConstant.IS_DEL_FALSE);
@@ -152,9 +175,9 @@ public class ZoneServiceImpl implements IZoneService {
             return null;
         }
 
-        List<Tree> treeList = new ArrayList<>();
+        List<ZoneTree> treeList = new ArrayList<>();
         for(Zone zone : parent1) {
-            Tree tree = new Tree();
+            ZoneTree tree = new ZoneTree();
             tree.setId(zone.getId() + "");
             tree.setText(zone.getName());
             tree.setLevel(zone.getLevel());
