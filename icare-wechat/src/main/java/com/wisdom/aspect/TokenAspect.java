@@ -1,6 +1,7 @@
 package com.wisdom.aspect;
 
 import com.wisdom.annotation.Token;
+import com.wisdom.cache.CommonCache;
 import com.wisdom.cache.SessionCache;
 import com.wisdom.config.AccessTokenSetting;
 import com.wisdom.constants.CommonConstant;
@@ -29,7 +30,7 @@ public class TokenAspect {
     private AccessTokenSetting accessTokenSetting;
 
     @Autowired
-    private SessionCache sessionCache;
+    private CommonCache commonCache;
 
     private String synchronize = "synchronize";
 
@@ -39,7 +40,7 @@ public class TokenAspect {
      * @param
      * @throws
      */
-    @Before("execution(public * com.wisdom.weChat.service.impl..*Impl.*(..))")
+    @Before("execution(public * com.wisdom.service.impl..*Impl.*(..))")
     public void before(JoinPoint point) throws Throwable {
 
         Method targetMethod = null;
@@ -59,7 +60,7 @@ public class TokenAspect {
         Token token = targetMethod.getAnnotation(Token.class);
 
         if(null != token && token.tokenCheck()) {
-            Object obj = sessionCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
+            Object obj = commonCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
             // 不需要刷新access_token
             if(null != obj) {
                 AccessToken accessToken = (AccessToken) obj;
@@ -71,21 +72,21 @@ public class TokenAspect {
                     return;
                 }
 
-                Object isLoading = sessionCache.get(CommonConstant.ACCESS_TOKEN_IS_LOADING);
+                Object isLoading = commonCache.get(CommonConstant.ACCESS_TOKEN_IS_LOADING);
                 if(null != isLoading) {
                     return;
                 }
 
                 // 刷新access_token是同步的
                 synchronized (synchronize) {
-                    isLoading = sessionCache.get(CommonConstant.ACCESS_TOKEN_IS_LOADING);
+                    isLoading = commonCache.get(CommonConstant.ACCESS_TOKEN_IS_LOADING);
                     if(null != isLoading) {
                         return;
                     }
 
-                    sessionCache.put(CommonConstant.ACCESS_TOKEN_IS_LOADING, true, 5 * 60);
+                    commonCache.put(CommonConstant.ACCESS_TOKEN_IS_LOADING, true, 5 * 60);
 
-                    accessToken = (AccessToken) sessionCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
+                    accessToken = (AccessToken) commonCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
 
                     currentTime = System.currentTimeMillis();
                     loadTime = accessToken.getLoadTime();
@@ -99,7 +100,7 @@ public class TokenAspect {
             // 需要加载access_token
             else {
                 synchronized (synchronize) {
-                    obj = sessionCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
+                    obj = commonCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
                     if(null != obj) {
                         return;
                     }
