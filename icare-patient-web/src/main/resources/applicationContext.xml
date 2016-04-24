@@ -126,57 +126,6 @@
         <!--<property name="subject" value="邮件主题" />-->
         <!--<property name="text" value="邮件内容" />-->
     <!--</bean>-->
-
-	<!-- spring自己的换管理器，这里定义了两个缓存位置名称 ，既注解中的value -->
-	<bean id="cacheManager" class="org.springframework.cache.support.SimpleCacheManager">
-		<property name="caches">
-			<set>
-				<bean class="com.wisdom.cache.RedisCache">
-					<property name="redisTemplate" ref="redisTemplate" />
-					<property name="name" value="commonCache"/>
-				</bean>
-				<bean class="com.wisdom.cache.RedisCache">
-					<property name="redisTemplate" ref="paramRedisTemplate" />
-					<property name="name" value="paramCache"/>
-				</bean>
-			</set>
-		</property>
-	</bean>
-
-	<!-- redis 相关配置 -->
-	<bean id="poolConfig" class="redis.clients.jedis.JedisPoolConfig">
-		<property name="maxIdle" value="${redis.maxIdle}"/>
-		<property name="maxWaitMillis" value="${redis.maxWait}"/>
-	</bean>
-
-	<bean id="connectionFactory"
-		  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-		  p:hostName="${redis.host}" p:password="${redis.password}" p:port="${redis.port}" p:poolConfig-ref="poolConfig"
-		  p:database="${redis.database}" />
-
-	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-		<property name="connectionFactory" ref="connectionFactory" />
-	</bean>
-
-	<!-- 基本参数-->
-	<bean id="paramConnectionFactory"
-		  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-		  p:hostName="${redis.host}" p:password="${redis.password}" p:port="${redis.port}" p:poolConfig-ref="poolConfig"
-		  p:database="1" />
-
-	<bean id="paramRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-		<property name="connectionFactory" ref="paramConnectionFactory" />
-	</bean>
-
-	<!-- session-->
-	<bean id="connectionFactory02"
-		  class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
-		  p:hostName="${redis.host}" p:password="${redis.password}" p:port="${redis.port}" p:poolConfig-ref="poolConfig"
-		  p:database="2" />
-
-	<bean id="sessionRedisTemplate" class="org.springframework.data.redis.core.RedisTemplate">
-		<property name="connectionFactory" ref="connectionFactory02" />
-	</bean>
     
-	 <!--<import resource="applicationContext-weChat.xml"/>-->
+	 <import resource="applicationContext-cache.xml"/>
 </beans>
