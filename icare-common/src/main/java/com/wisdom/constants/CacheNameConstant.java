@@ -17,6 +17,11 @@ public class CacheNameConstant {
     public static final String PARAM_CACHE = "paramCache";
 
     /**
+     * 行政区域缓存
+     */
+    public static final String ZONE_CACHE = "zoneCache";
+
+    /**
      * 默认缓存
      */
     public static final String DEFAULT = "default";

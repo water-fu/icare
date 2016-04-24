@@ -17,9 +17,24 @@ public class CommonConstant {
     public static final Integer SESSION_TIME_OUT = 30 *  60;
 
     /**
-     * cookie24小时过期
+     * 24小时过期
      */
     public static final Integer SESSION_TIME_OUT_DAY = 24 * 60 * 60;
+
+    /**
+     * 一个星期过期
+     */
+    public static final Integer SESSION_TIME_OUT_WEEK = 7 * 24 * 60 * 60;
+
+    /**
+     * 半个月过期
+     */
+    public static final Integer SESSION_TIME_OUT_HELF_MONTH = 15 * 24 * 60 * 60;
+
+    /**
+     * 一个月过期
+     */
+    public static final Integer SESSION_TIME_OUT_MONTH = 30 * 24 * 60 * 60;
 
     /**
      * 微信公众号access_token存放到redis的key
@@ -80,4 +95,9 @@ public class CommonConstant {
      * 验证码
      */
     public static final String DEFAULT_IDENTIFY_CODE = "123456";
+
+    /**
+     * 行政区域缓存KEY
+     */
+    public static final String ZONE_SELECT_CACHE_VALUE = "ZONE_SELECT";
 }
