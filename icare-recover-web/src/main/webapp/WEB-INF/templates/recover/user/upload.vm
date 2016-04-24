@@ -85,7 +85,13 @@
 
         //删除上传图片，删除图标显示
         $('.piclist_title a').click(function() {
-            $('.piclist a').css('display','inline-block');
+            if($(this).text() == '删除') {
+                $('.piclist a').css('display', 'inline-block');
+                $(this).text('取消');
+            } else {
+                $('.piclist a').css('display', 'none');
+                $(this).text('删除');
+            }
         });
 
         //示例图片展示
@@ -128,7 +134,7 @@
                     $('.piclist').append(div);
 
                     var input = $('<input type="hidden" class="inputLocal">')
-                    input.attr('id', 'input_' + index);
+                    input.attr('lid', 'input_' + index);
                     input.val(localIds);
 
                     $('#uploadForm').append(input);
@@ -138,7 +144,7 @@
         });
 
         // 下一步
-        $('.next').bind('click', save);
+        $('.next').bind('click', upload);
     });
 
     function del(el) {
@@ -147,44 +153,77 @@
         div.remove();
     }
 
-    function save() {
+    function upload() {
+
+        $('.next').html('正在上传图片');
 
         $('.next').addClass('btn-gray');
         $('.next').unbind('click');
 
-
+        var inputs = [], lids = [];
         $('.inputLocal').each(function() {
-            alert($(this).val());
-//            uploadImage($('#headLocalId').val(), function(data) {
-//
-//            });
+            var _this = $(this);
+
+            inputs.push(_this.val());
+            lids.push(_this.attr('lid'));
+
         });
 
-//        $('.next').html('正在保存');
-//
-//        $.ajax({
-//            url: base + '/p/recover/personalInfo',
-//            data: $('#personInfoForm').serialize(),
-//            type: 'post',
-//            error: function(XMLHttpRequest, textStatus, errorThrown) {
-//                alert('网络异常，请稍后再试');
-//
-//                $('.next').html('完成');
-//                $('.next').removeClass('btn-gray');
-//                $('.next').bind('click', save);
-//            },
-//            success: function(data) {
-//                if(data.flag) {
-//
-//                } else {
-//                    ajaxErrorCallBack(data);
-//
-//                    $('.next').html('完成');
-//                    $('.next').removeClass('btn-gray');
-//                    $('.next').bind('click', save);
-//
-//                }
-//            }
-//        });
+        syncUpload(inputs, lids);
     }
+
+    function save() {
+        $('.next').html('正在保存');
+
+        $.ajax({
+            url: base + '/recover/upload',
+            data: $('#uploadForm').serialize(),
+            type: 'post',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('网络异常，请稍后再试');
+
+                $('.next').html('完成');
+                $('.next').removeClass('btn-gray');
+                $('.next').bind('click', upload);
+            },
+            success: function(data) {
+                if(data.flag) {
+
+                } else {
+                    ajaxErrorCallBack(data);
+
+                    $('.next').html('完成');
+                    $('.next').removeClass('btn-gray');
+                    $('.next').bind('click', upload);
+
+                }
+            }
+        });
+    }
+
+    var syncUpload = function(localIds, lids) {
+        var localId = localIds.pop();
+        var lid = lids.pop();
+
+        alert(localId);
+        uploadImage(localId, function (res) {
+
+            var serverId = res.serverId;
+
+            var input = $('<input type="hidden" name="serverId" class="inputServer">')
+            input.attr('lid', lid);
+            input.val(serverId);
+
+            $('#uploadForm').append(input);
+
+            alert(1);
+            alert(localIds.length);
+            if(localIds.length > 0) {
+                alert(2);
+                syncUpload(localIds, lids);
+            } else {
+                save();
+            }
+        });
+    };
 </script>
