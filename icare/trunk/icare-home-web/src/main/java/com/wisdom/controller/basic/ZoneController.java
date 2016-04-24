@@ -5,7 +5,7 @@ import com.wisdom.constants.CommonConstant;
 import com.wisdom.dao.entity.Zone;
 import com.wisdom.entity.PageInfo;
 import com.wisdom.entity.ResultBean;
-import com.wisdom.entity.Tree;
+import com.wisdom.entity.ZoneTree;
 import com.wisdom.service.basic.IZoneService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -65,7 +65,7 @@ public class ZoneController extends BaseController {
     @ResponseBody
     public ResultBean initData() {
         try {
-            List<Tree> list = zoneService.initData();
+            List<ZoneTree> list = zoneService.initData();
 
             ResultBean resultBean = new ResultBean(true);
 
@@ -151,6 +151,7 @@ public class ZoneController extends BaseController {
     @ResponseBody
     public ResultBean delete(Zone zone) {
         try {
+            zone = zoneService.get(zone);
 
             zoneService.delete(zone);
 
