@@ -8,12 +8,15 @@
     <title>$!{TITLE}</title>
 
     #parse("addon/css.vm")
+    <link rel="stylesheet" type="text/css" href="$!{CONTEXT_PATH}/static/js/mui/2.9.0/mui.min.css" ></link>
+    <link rel="stylesheet" type="text/css" href="$!{CONTEXT_PATH}/static/js/mui/picker/mui.picker.css" ></link>
+    <link rel="stylesheet" type="text/css" href="$!{CONTEXT_PATH}/static/js/mui/picker/mui.poppicker.css" ></link>
 </head>
 <body class="fill">
     <div class="container guide">
         <div class="row">
             <header>
-                <a href="#"><i class="iconfont icon-errowleft fl"></i></a>
+##                <a href="#"><i class="iconfont icon-errowleft fl"></i></a>
                 <span class="m-r-xl">个人简况</span>
             </header>
             <form id="personInfoForm">
@@ -21,7 +24,7 @@
                     <li class="clearfix b-b">
                         <label class="control-label col-xs-3">现居地址：</label>
                         <div class="col-xs-9 address">
-                            <input type="text" name="address" class="form-control" placeholder="请输入"/>
+                            <input type="text" name="address" class="form-control" placeholder="请输入" style="padding-right: 35px;"/>
                             <a href="javascript:void(0)" id="map"></a>
                         </div>
                         <div class="col-xs-12 map">
@@ -48,17 +51,38 @@
                         </div>
                     </li>
                 </ul>
-                <ul class="infoput clearfix">
+                <ul class="infoput clearfix serverUl">
+
                     <li class="clearfix b-b">
                         <label class="control-label col-xs-3">服务地区：</label>
                         <div class="col-xs-9 time">
-                            <input type="text" class="form-control" placeholder="请选择"/>
-                            <a href="javascript:void(0)"></a>
+                            <input type="text" class="form-control" id="show1" placeholder="请选择" readonly style="background-color: #FFF" />
+                            <input type="hidden" id="server1" name="server">
+                            <a href="javascript:void(0)" id="area1"></a>
                         </div>
                     </li>
-                    <li class="clearfix">
-                        <panel class="add_head"><i class="iconfont icon-circularframejiahao"></i>添加服务地区</panel>
+
+                    <li class="clearfix b-b">
+                        <label class="control-label col-xs-3 add_head"><i class="iconfont icon-iconfontjian jian2"></i></label>
+                        <div class="col-xs-9 time">
+                            <input type="text" class="form-control" id="show2" placeholder="请选择" readonly style="background-color: #FFF" />
+                            <input type="hidden" id="server2" name="server">
+                            <a href="javascript:void(0)" id="area2"></a>
+                        </div>
                     </li>
+
+                    <li class="clearfix b-b">
+                        <label class="control-label col-xs-3 add_head"><i class="iconfont icon-iconfontjian jian3"></i></label>
+                        <div class="col-xs-9 time">
+                            <input type="text" class="form-control" id="show3" placeholder="请选择" readonly style="background-color: #FFF" />
+                            <input type="hidden" id="server3" name="server">
+                            <a href="javascript:void(0)" id="area3"></a>
+                        </div>
+                    </li>
+
+##                    <li class="clearfix">
+##                        <panel class="add_head"><i class="iconfont icon-circularframejiahao add_server"></i>添加服务地区</panel>
+##                    </li>
                 </ul>
             </form>
             <div class="tc">
@@ -70,57 +94,42 @@
         </div>
     </div>
 
-    <!-- 模态框（Modal） -->
-    <div class="modal fade" id="areaModal" tabindex="-1" role="dialog"
-         aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close"
-                            data-dismiss="modal" aria-hidden="true">
-                        &times;
-                    </button>
-                    <h5 class="modal-title" id="myModalLabel">
-                        服务地区选择
-                    </h5>
-                </div>
-                <div class="modal-body">
-
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default btn-sm"
-                            data-dismiss="modal">关闭
-                    </button>
-                    <button type="button" class="btn btn-primary btn-sm">
-                        确定
-                    </button>
-                </div>
-            </div><!-- /.modal-content -->
-        </div><!-- /.modal -->
-    </div>
-
 </body>
 </html>
 #parse("addon/javascript.vm")
-<script type="text/javascript" src="http://api.map.baidu.com/api?type=quick&ak=22002f44f2003d3dd4cefda0d46523f2&v=1.0"></script>
+##<script src="http://api.map.baidu.com/api?type=quick&ak=22002f44f2003d3dd4cefda0d46523f2&v=1.0"></script>
+<script src="$!{CONTEXT_PATH}/static/js/mui/2.9.0/mui.min.js" ></script>
+<script src="$!{CONTEXT_PATH}/static/js/mui/picker/mui.picker.js" ></script>
+<script src="$!{CONTEXT_PATH}/static/js/mui/picker/mui.poppicker.js" ></script>
+##<script src="$!{CONTEXT_PATH}/static/js/mui/picker/city.data-3.js" ></script>
 <script type="text/javascript">
     $(function() {
 
-        $('#map').click(function() {
-            if($('.map').css('display')=='none'){
-                $('.map').slideDown();
-            }else{
-                $('.map').slideUp();
-            }
-        });
-
-        // 百度地图API功能
-        var map = new BMap.Map('allmap');
-        map.centerAndZoom('北京', 12);
-        map.addControl(new BMap.ZoomControl());  //添加地图缩放控件
+//        $('#map').click(function() {
+//            if($('.map').css('display') == 'none') {
+//                $('.map').slideDown();
+//            } else {
+//                $('.map').slideUp();
+//            }
+//        });
+//
+//        // 百度地图API功能
+//        var map = new BMap.Map('allmap');
+//        map.centerAndZoom('北京', 12);
+//        map.addControl(new BMap.ZoomControl());  //添加地图缩放控件
 
         // 下一步
         $('.next').bind('click', save);
+
+        $('.jian2').click(function() {
+            $('#show2').val('');
+            $('#server2').val('');
+        });
+
+        $('.jian3').click(function() {
+            $('#show3').val('');
+            $('#server3').val('');
+        });
     });
 
     function save() {
@@ -172,4 +181,73 @@
             }
         });
     }
+
+    (function($$, doc) {
+        $$.init();
+
+        $$.ready(function() {
+            //-----------------------------------------
+            //					//级联示例
+            var cityPicker1 = new $$.PopPicker({
+                layer: 3
+            });
+
+            var cityPicker2 = new $$.PopPicker({
+                layer: 3
+            });
+
+            var cityPicker3 = new $$.PopPicker({
+                layer: 3
+            });
+
+            $.ajax({
+                url: base + '/recover/zoneSelect',
+                type: 'get',
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                },
+                success: function(data) {
+                    if(data.flag) {
+                        data = eval(data.data);
+                        cityPicker1.setData(data);
+                        cityPicker2.setData(data);
+                        cityPicker3.setData(data);
+
+                        var button1 = doc.getElementById('area1');
+                        button1.addEventListener('tap', function(event) {
+                            cityPicker1.show(function(items) {
+                                var show = items[0].text + ' ' + items[1].text + ' ' + items[2].text;
+                                $('#show1').val(show);
+
+                                var key = items[0].value + ',' + items[1].value + ',' + items[2].value;
+                                $('#server1').val(key);
+                            });
+                        }, false);
+
+                        var button2 = doc.getElementById('area2');
+                        button2.addEventListener('tap', function(event) {
+                            cityPicker2.show(function(items) {
+                                var str = items[0].text + ' ' + items[1].text + ' ' + items[2].text;
+                                $('#show2').val(str);
+
+                                var key = items[0].value + ',' + items[1].value + ',' + items[2].value;
+                                $('#server2').val(key);
+                            });
+                        }, false);
+
+                        var button3 = doc.getElementById('area3');
+                        button3.addEventListener('tap', function(event) {
+                            cityPicker3.show(function(items) {
+                                var str = items[0].text + ' ' + items[1].text + ' ' + items[2].text;
+                                $('#show3').val(str);
+
+                                var key = items[0].value + ',' + items[1].value + ',' + items[2].value;
+                                $('#server3').val(key);
+                            });
+                        }, false);
+                    }
+                }
+            });
+        });
+    })(mui, document);
 </script>

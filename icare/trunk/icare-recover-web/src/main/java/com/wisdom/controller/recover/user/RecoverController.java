@@ -2,11 +2,14 @@ package com.wisdom.controller.recover.user;
 
 import com.wisdom.annotation.Check;
 import com.wisdom.cache.SessionCache;
+import com.wisdom.config.SystemSetting;
 import com.wisdom.constants.CommonConstant;
 import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.controller.common.BaseController;
 import com.wisdom.entity.ResultBean;
 import com.wisdom.entity.SessionDetail;
+import com.wisdom.entity.ZoneSelect;
+import com.wisdom.service.IZoneCommonService;
 import com.wisdom.util.CookieUtil;
 import com.wisdom.dao.entity.Recover;
 import com.wisdom.service.user.IRecoverService;
@@ -15,12 +18,15 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 康复师
@@ -42,6 +48,12 @@ public class RecoverController extends BaseController {
 
     @Autowired
     private IRecoverService recoverService;
+
+    @Autowired
+    private IZoneCommonService zoneCommonService;
+
+    @Autowired
+    private SystemSetting systemSetting;
 
     /**
      * 注册成功页面
@@ -76,12 +88,12 @@ public class RecoverController extends BaseController {
      */
     @RequestMapping(value = "personalInfo", method = RequestMethod.POST)
     @ResponseBody
-    public ResultBean personalInfo(Recover recover, HttpServletRequest request) {
+    public ResultBean personalInfo(Recover recover, String[] server, HttpServletRequest request) {
         try {
             Cookie cookie = CookieUtil.getCookieByName(request, CommonConstant.COOKIE_VALUE);
             SessionDetail sessionDetail = (SessionDetail) sessionCache.get(cookie.getValue());
 
-            recoverService.personalInfo(recover, sessionDetail);
+            recoverService.personalInfo(recover, server, sessionDetail);
 
             ResultBean resultBean = new ResultBean(true);
 
@@ -182,5 +194,57 @@ public class RecoverController extends BaseController {
     @RequestMapping(value = "upload", method = RequestMethod.GET)
     public String upload() {
         return String.format(VM_ROOT_PATH, "upload");
+    }
+
+    /**
+     * 证件上传
+     * @param model
+     * @param serverIds
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "upload", method = RequestMethod.POST)
+    @ResponseBody
+    public ResultBean upload(Model model, String[] serverIds, HttpServletRequest request) {
+        try {
+            Cookie cookie = CookieUtil.getCookieByName(request, CommonConstant.COOKIE_VALUE);
+            SessionDetail sessionDetail = (SessionDetail) sessionCache.get(cookie.getValue());
+
+            List<byte[]> list = new ArrayList<>();
+            for(String serverId : serverIds) {
+                byte[] file = mediaDownload.getMediaFile(serverId);
+
+                list.add(file);
+            }
+
+            recoverService.upload(list, sessionDetail);
+
+            ResultBean resultBean = new ResultBean(true);
+
+            return resultBean;
+        } catch (Exception ex) {
+            return ajaxException(ex);
+        }
+    }
+
+    /**
+     * 行政区域下拉列表
+     * @return
+     */
+    @RequestMapping(value = "zoneSelect", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultBean zoneSelect() {
+        try {
+
+            String data = zoneCommonService.zoneSelect(systemSetting.getCountry());
+
+            ResultBean resultBean = new ResultBean(true);
+            resultBean.setData(data);
+
+            return resultBean;
+
+        } catch (Exception ex) {
+            return ajaxException(ex);
+        }
     }
 }
