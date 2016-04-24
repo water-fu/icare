@@ -1,6 +1,7 @@
 package com.wisdom.service.impl;
 
 import com.wisdom.annotation.Token;
+import com.wisdom.cache.CommonCache;
 import com.wisdom.cache.SessionCache;
 import com.wisdom.constant.UrlConstant;
 import com.wisdom.constants.CommonConstant;
@@ -31,7 +32,7 @@ public class JsapiTicketServiceImpl implements IJsapiTicketService {
     private static final Logger logger = LoggerFactory.getLogger(JsapiTicketServiceImpl.class);
 
     @Autowired
-    private SessionCache sessionCache;
+    private CommonCache commonCache;
 
     /**
      * jsapi_ticket获取
@@ -41,7 +42,7 @@ public class JsapiTicketServiceImpl implements IJsapiTicketService {
     public JsapiTicket getJsapiTicket() throws Exception {
         JsapiTicket jsapiTicket = new JsapiTicket();
 
-        AccessToken accessToken = (AccessToken) sessionCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
+        AccessToken accessToken = (AccessToken) commonCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
 
         String url = UrlConstant.JSAPI_TICKET_URL.replace("ACCESS_TOKEN", accessToken.getToken());
         JSONObject jsonObject = HttpClientUtil.doGetStr(url);
@@ -62,7 +63,7 @@ public class JsapiTicketServiceImpl implements IJsapiTicketService {
     @Override
     @Token
     public Map<String, String> sign(String url) throws Exception {
-        JsapiTicket jsapiTicket = (JsapiTicket) sessionCache.get(CommonConstant.JSAPI_TICKET_VALUE);
+        JsapiTicket jsapiTicket = (JsapiTicket) commonCache.get(CommonConstant.JSAPI_TICKET_VALUE);
 
         Map<String, String> ret = new HashMap<>();
 
@@ -89,17 +90,6 @@ public class JsapiTicketServiceImpl implements IJsapiTicketService {
         ret.put("signature", signature);
 
         return ret;
-    }
-
-    private static String byteToHex(final byte[] hash) {
-        Formatter formatter = new Formatter();
-        for (byte b : hash)
-        {
-            formatter.format("%02x", b);
-        }
-        String result = formatter.toString();
-        formatter.close();
-        return result;
     }
 
     private static String create_nonce_str() {

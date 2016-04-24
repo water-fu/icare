@@ -1,5 +1,6 @@
 package com.wisdom.config;
 
+import com.wisdom.cache.CommonCache;
 import com.wisdom.cache.SessionCache;
 import com.wisdom.constants.CommonConstant;
 import com.wisdom.entity.JsapiTicket;
@@ -18,12 +19,12 @@ public class JsapiTicketSetting {
     private IJsapiTicketService jsapiTicketService;
 
     @Autowired
-    private SessionCache sessionCache;
+    private CommonCache commonCache;
 
     public void initJsapiTicket() throws Exception {
         JsapiTicket jsapiTicket = jsapiTicketService.getJsapiTicket();
 
         // jsapi_ticket
-        sessionCache.put(CommonConstant.JSAPI_TICKET_VALUE, jsapiTicket, jsapiTicket.getExpiresIn());
+        commonCache.put(CommonConstant.JSAPI_TICKET_VALUE, jsapiTicket, jsapiTicket.getExpiresIn());
     }
 }

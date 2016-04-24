@@ -1,5 +1,6 @@
 package com.wisdom.config;
 
+import com.wisdom.cache.CommonCache;
 import com.wisdom.cache.SessionCache;
 import com.wisdom.constants.CommonConstant;
 import com.wisdom.entity.AccessToken;
@@ -25,7 +26,7 @@ public class AccessTokenSetting {
     private IAccessTokenService accessTokenService;
 
     @Autowired
-    private SessionCache sessionCache;
+    private CommonCache commonCache;
 
     @Autowired
     private JsapiTicketSetting jsapiTicketSetting;
@@ -36,8 +37,14 @@ public class AccessTokenSetting {
      */
     @PostConstruct
     public void initAccessToken() throws Exception {
-        Object obj = sessionCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
+        Object obj = commonCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
         if(null != obj) {
+            // 如果JSAPI_TICKET为空，则加载
+            obj = commonCache.get(CommonConstant.JSAPI_TICKET_VALUE);
+            if(null == obj) {
+                jsapiTicketSetting.initJsapiTicket();
+            }
+
             return;
         }
 
@@ -45,7 +52,7 @@ public class AccessTokenSetting {
 
         AccessToken accessToken = accessTokenService.getAccessToken();
         // 把accessToken放到redis中
-        sessionCache.put(CommonConstant.ACCESS_TOKEN_VALUE, accessToken, accessToken.getExpiresIn());
+        commonCache.put(CommonConstant.ACCESS_TOKEN_VALUE, accessToken, accessToken.getExpiresIn());
 
         // 初始化jsapi_ticket
         jsapiTicketSetting.initJsapiTicket();
