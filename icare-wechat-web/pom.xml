@@ -11,5 +11,17 @@
     <name>icare-wechat-web</name>
     <url>http://maven.apache.org</url>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.wisdom</groupId>
+            <artifactId>icare-cache</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
 
+        <dependency>
+            <groupId>com.wisdom</groupId>
+            <artifactId>icare-wechat</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>
