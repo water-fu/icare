@@ -1,15 +1,20 @@
 package com.wisdom.controller;
 
+import com.wisdom.action.IAction;
 import com.wisdom.annotation.Check;
 import com.wisdom.config.WeChatSetting;
 import com.wisdom.entity.ResultBean;
 import com.wisdom.exception.ApplicationException;
 import com.wisdom.service.IJsapiTicketService;
+import com.wisdom.util.JackonUtil;
+import com.wisdom.util.SAXReaderUtil;
+import com.wisdom.util.SpringBeanUtil;
 import com.wisdom.util.WeChatUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -67,59 +72,42 @@ public class WeChatController {
     @ResponseBody
     @Check(loginCheck = false)
     public String doPost(HttpServletRequest request) throws Exception {
-
-        System.out.println(123);
-
-        return "";
-    }
-
-    /**
-     * 获取微信config时的参数
-     * @return
-     */
-    @RequestMapping(value = "getWeChatConfigParam", method = RequestMethod.GET)
-    @ResponseBody
-    @Check(loginCheck = false)
-    public ResultBean getWeChatConfigParam(String url) {
         try {
-            Map map = jsapiTicketService.sign(url);
-            map.put("appId", weChatSetting.getAppId());
+            request.setCharacterEncoding("UTF-8");
 
-            // 需要获取接口权限
-            List<String> jsApiList = new ArrayList<>();
-            jsApiList.add("onMenuShareTimeline");
-            jsApiList.add("hideOptionMenu");
-            jsApiList.add("showMenuItems");
-            jsApiList.add("chooseImage");
-            jsApiList.add("uploadImage");
+            // 解析请求的内容
+            Map<String, String> map = SAXReaderUtil.xmlToMap(request);
 
-            map.put("jsApiList", jsApiList);
+            logger.info(String.format("请求参数:[%s]", JackonUtil.writeEntity2JSON(map)));
 
-            ResultBean resultBean = new ResultBean(true);
-            resultBean.setData(map);
+            // 消息类型
+            String msgType = map.get("MsgType");
+            // 事件类型
+            String eventType = map.get("Event");
 
-            return resultBean;
+            // 业务action的Bean名称
+            StringBuffer actionBean = new StringBuffer(msgType);
+
+            if(!StringUtils.isEmpty(eventType)) {
+                actionBean.append("_").append(eventType);
+            }
+
+            IAction messageAction = null;
+            try {
+                messageAction = (IAction) SpringBeanUtil.getSpringBean(actionBean.toString());
+            } catch (Exception ex) {
+                logger.error("Spring Bean Error:" + ex.getMessage());
+            }
+            if(null == messageAction) {
+                return "success";
+            }
+
+            String message = messageAction.execute(map);
+
+            return message;
         } catch (Exception ex) {
-            return ajaxException(ex);
+            logger.error("微信公众号请求失败:" + ex.getMessage(), ex);
+            return "success";
         }
-    }
-
-    /**
-     * ajax请求异常返回
-     * @param ex
-     * @return
-     */
-    protected ResultBean ajaxException(Exception ex) {
-        logger.error(ex.getMessage(), ex);
-
-        ResultBean resultBean = new ResultBean(false);
-
-        if(ex instanceof ApplicationException) {
-            resultBean.setMsg(ex.getMessage());
-        } else {
-            resultBean.setMsg("系统出错了");
-        }
-
-        return resultBean;
     }
 }
