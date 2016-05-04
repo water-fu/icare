@@ -6,11 +6,13 @@ import com.wisdom.dao.entity.Patient;
 import com.wisdom.dao.entity.PatientExample;
 import com.wisdom.dao.mapper.AccountMapper;
 import com.wisdom.dao.mapper.PatientMapper;
+import com.wisdom.entity.AuditList;
 import com.wisdom.entity.SessionDetail;
 import com.wisdom.exception.ApplicationException;
 import com.wisdom.service.IFileService;
 import com.wisdom.service.user.IPatientService;
 import com.wisdom.util.DateUtil;
+import com.wisdom.util.JackonUtil;
 import com.wisdom.util.Pinyin4jUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -93,6 +95,75 @@ public class PatientServiceImpl implements IPatientService {
         }
 
         insertIdentification(patient, headFileId, bodyFileId, sessionDetail);
+    }
+
+    /**
+     * 患者审核
+     * @param patient
+     * @param auditType
+     */
+    @Override
+    public void audit(Patient patient, String auditType, String auditMsg, SessionDetail sessionDetail) {
+        // 审核通过
+        if(SysParamDetailConstant.AUDIT_SUCCESS.equals(auditType)) {
+            patient = patientMapper.selectByPrimaryKey(patient.getId());
+            Account account = accountMapper.selectByPrimaryKey(patient.getAccountId());
+
+            try {
+                // 审核流程信息
+                AuditList auditList = JackonUtil.readJson2Entity(account.getAuditDesc(), AuditList.class);
+
+                AuditList.AuditInfo auditInfo = new AuditList.AuditInfo();
+                auditInfo.setAuditType(auditType);
+                auditInfo.setAuditMsg(auditMsg);
+                auditInfo.setAccountId(sessionDetail.getAccountId()+"");
+                auditInfo.setAuditDate(DateUtil.getTimestamp());
+
+                auditList.getList().add(auditInfo);
+
+                account.setAuditDesc(JackonUtil.writeEntity2JSON(auditList));
+
+            } catch (Exception ex) {
+                throw new ApplicationException("审核信息保存失败", ex);
+            }
+
+            // 审核通过
+            account.setStatus(SysParamDetailConstant.ACCOUNT_STATUS_CONFIRM);
+            account.setUpdateTime(DateUtil.getTimestamp());
+            account.setUpdateUser(sessionDetail.getAccountId()+"");
+
+            accountMapper.updateByPrimaryKeySelective(account);
+        }
+        // 审核不通过
+        else if(SysParamDetailConstant.AUDIT_FAILE.equals(auditType)) {
+            patient = patientMapper.selectByPrimaryKey(patient.getId());
+            Account account = accountMapper.selectByPrimaryKey(patient.getAccountId());
+
+            try {
+                // 审核流程信息
+                AuditList auditList = JackonUtil.readJson2Entity(account.getAuditDesc(), AuditList.class);
+
+                AuditList.AuditInfo auditInfo = new AuditList.AuditInfo();
+                auditInfo.setAuditType(auditType);
+                auditInfo.setAuditMsg(auditMsg);
+                auditInfo.setAccountId(sessionDetail.getAccountId()+"");
+                auditInfo.setAuditDate(DateUtil.getTimestamp());
+
+                auditList.getList().add(auditInfo);
+
+                account.setAuditDesc(JackonUtil.writeEntity2JSON(auditList));
+
+            } catch (Exception ex) {
+                throw new ApplicationException("审核信息保存失败", ex);
+            }
+
+            // 审核通过
+            account.setStatus(SysParamDetailConstant.ACCOUNT_STATUS_FAILED);
+            account.setUpdateTime(DateUtil.getTimestamp());
+            account.setUpdateUser(sessionDetail.getAccountId()+"");
+
+            accountMapper.updateByPrimaryKeySelective(account);
+        }
     }
 
     /**

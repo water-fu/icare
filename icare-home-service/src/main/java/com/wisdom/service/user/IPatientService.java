@@ -30,4 +30,12 @@ public interface IPatientService {
      * @param bodyImg
      */
     void identification(Patient patient, String headImg, String bodyImg, SessionDetail sessionDetail);
+
+    /**
+     * 患者审核
+     * @param patient
+     * @param auditType
+     * @param auditMsg
+     */
+    void audit(Patient patient, String auditType, String auditMsg, SessionDetail sessionDetail);
 }
