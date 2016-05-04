@@ -166,7 +166,8 @@ public class WeChatLoginController extends BaseController {
                 logger.error("缓存redis异常:" + ex.getMessage(), ex);
             }
 
-            return new ModelAndView("redirect:/patient/success");
+//            return new ModelAndView("redirect:/patient/success");
+            return new ModelAndView("redirect:/user/bind");
 
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);

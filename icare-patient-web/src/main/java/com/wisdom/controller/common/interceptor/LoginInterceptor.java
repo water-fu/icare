@@ -103,19 +103,19 @@ public class LoginInterceptor implements HandlerInterceptor {
                     return false;
                 }
             }
-            // 账号状态校验
-            else if(authen.statusCheck()) {
-                // 账号状态为新增
-                if(sessionDetail.getStatus().equals(SysParamDetailConstant.ACCOUNT_STATUS_NEW)) {
-                    if(logger.isDebugEnabled()) {
-                        logger.debug("未实名认证,跳转到认证页面");
-                    }
-
-                    sb.append("/patient/identification");
-                    response.sendRedirect(sb.toString());
-                    return false;
-                }
-            }
+//            // 账号状态校验
+//            else if(authen.statusCheck()) {
+//                // 账号状态为新增
+//                if(sessionDetail.getStatus().equals(SysParamDetailConstant.ACCOUNT_STATUS_NEW)) {
+//                    if(logger.isDebugEnabled()) {
+//                        logger.debug("未实名认证,跳转到认证页面");
+//                    }
+//
+//                    sb.append("/patient/identification");
+//                    response.sendRedirect(sb.toString());
+//                    return false;
+//                }
+//            }
         }
 
         return true;
