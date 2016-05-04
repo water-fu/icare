@@ -810,11 +810,11 @@ public class FileServiceImpl implements IFileService {
 		if (fileUploadInfo == null) {
 			throw new Exception("文件不存在");
 		}
-		FileServerConfig fileServerConfig=fileServerConfigMapper.selectByPrimaryKey(fileUploadInfo.getFileServer());
+		FileServerConfig fileServerConfig = getServerConfig(fileUploadInfo.getFileServer());
 		
-		if (fileUploadInfo.getFilePath().startsWith(fileServerConfig.getRootPath())) {
-			fileUploadInfo.setFilePath(fileUploadInfo.getFilePath().replace(fileServerConfig.getRootPath() + "/", ""));
-		}
+//		if (fileUploadInfo.getFilePath().startsWith(fileServerConfig.getRootPath())) {
+//			fileUploadInfo.setFilePath(fileUploadInfo.getFilePath().replace(fileServerConfig.getRootPath() + "/", ""));
+//		}
 		return getHttpUrlByFileObject(fileUploadInfo, fileServerConfig);
 	}
 }
