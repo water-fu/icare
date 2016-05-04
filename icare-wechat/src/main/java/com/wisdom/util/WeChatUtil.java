@@ -39,10 +39,15 @@ public class WeChatUtil {
 		Menu menu = new Menu();
 
 		// 菜单一
-		ClickButton button1 = new ClickButton();
+//		ClickButton button1 = new ClickButton();
+//		button1.setName("康复预约");
+//		button1.setType(ButtonTypeConstant.BUTTON_CLICK);
+//		button1.setKey(ButtonKeyConstants.V001_BUTTON_BOOKING);
+
+		ViewButton button1 = new ViewButton();
 		button1.setName("康复预约");
-		button1.setType(ButtonTypeConstant.BUTTON_CLICK);
-		button1.setKey(ButtonKeyConstants.V001_BUTTON_BOOKING);
+		button1.setType(ButtonTypeConstant.BUTTON_VIEW);
+		button1.setUrl("http://www.ebanghu.com/patient/weChatLogin/login");
 
 
 		// 菜单二
