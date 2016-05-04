@@ -39,4 +39,11 @@ public interface IRecoverService {
      * @param serverIds
      */
     void upload(List<byte[]> serverIds, SessionDetail sessionDetail);
+
+    /**
+     * 根据账户编号获取康复师对象
+     * @param id
+     * @return
+     */
+    Recover findRecoverByAccountId(Integer id);
 }
