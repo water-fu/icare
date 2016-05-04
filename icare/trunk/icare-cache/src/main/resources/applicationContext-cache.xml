@@ -20,6 +20,10 @@
 					<property name="redisTemplate" ref="zoneRedisTemplate" />
 					<property name="name" value="zoneCache"/>
 				</bean>
+				<bean class="com.wisdom.cache.RedisCache">
+					<property name="redisTemplate" ref="sessionRedisTemplate" />
+					<property name="name" value="sessionCache"/>
+				</bean>
 			</set>
 		</property>
 	</bean>
