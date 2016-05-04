@@ -63,12 +63,12 @@ public class WeChatUtil {
 		ViewButton viewButton31 = new ViewButton();
 		viewButton31.setName("微博");
 		viewButton31.setType(ButtonTypeConstant.BUTTON_VIEW);
-		viewButton31.setUrl("www.baidu.com");
+		viewButton31.setUrl("http://weibo.cn");
 
 		ViewButton viewButton32 = new ViewButton();
 		viewButton32.setName("了解我们");
 		viewButton32.setType(ButtonTypeConstant.BUTTON_VIEW);
-		viewButton32.setUrl("www.badu.com");
+		viewButton32.setUrl("http://www.ebanghu.com");
 
 		button3.setSub_button(new Button[] {viewButton31, viewButton32});
 

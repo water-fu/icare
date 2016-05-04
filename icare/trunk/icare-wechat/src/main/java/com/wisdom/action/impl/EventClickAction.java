@@ -20,7 +20,8 @@ public class EventClickAction extends BaseAction<REQ_EventClick> {
 
     @Override
     protected String doAction(REQ_EventClick request) throws Exception {
-        String message = ResponseUtil.initText(request.getFromUserName(), request.getToUserName(), request.getEventKey());
+        String content = "该功能正在开发中,请稍后";
+        String message = ResponseUtil.initText(request.getFromUserName(), request.getToUserName(), content);
 
         return message;
     }
