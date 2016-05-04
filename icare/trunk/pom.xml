@@ -24,31 +24,66 @@
     <m2.proxy>http://121.43.116.27:8081/nexus</m2.proxy>
   </properties>
 
-  <repositories>
-    <repository>
-      <id>central</id>
-      <url>${m2.proxy}/content/groups/public</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </repository>
-  </repositories>
+  <!--<repositories>-->
+    <!--<repository>-->
+      <!--<id>central</id>-->
+      <!--<url>${m2.proxy}/content/groups/public</url>-->
+      <!--<releases>-->
+        <!--<enabled>true</enabled>-->
+      <!--</releases>-->
+      <!--<snapshots>-->
+        <!--<enabled>true</enabled>-->
+      <!--</snapshots>-->
+    <!--</repository>-->
+  <!--</repositories>-->
 
-  <pluginRepositories>
-    <pluginRepository>
-      <id>central</id>
-      <url>http://repo1.maven.org/maven2</url>
-      <snapshots>
-        <enabled>false</enabled>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
+  <!--<pluginRepositories>-->
+    <!--<pluginRepository>-->
+      <!--<id>central</id>-->
+      <!--<url>http://repo1.maven.org/maven2</url>-->
+      <!--<snapshots>-->
+        <!--<enabled>false</enabled>-->
+      <!--</snapshots>-->
+    <!--</pluginRepository>-->
+  <!--</pluginRepositories>-->
+
+  <!--<pluginRepositories>-->
+    <!--<pluginRepository>-->
+      <!--<id>nexus</id>-->
+      <!--<name>nexus</name>-->
+      <!--<url>${m2.proxy}}/content/groups/public/</url>-->
+      <!--<releases>-->
+        <!--<enabled>true</enabled>-->
+      <!--</releases>-->
+      <!--<snapshots>-->
+        <!--<enabled>true</enabled>-->
+      <!--</snapshots>-->
+    <!--</pluginRepository>-->
+  <!--</pluginRepositories>-->
+
+  <!--<distributionManagement>-->
+    <!--<repository>-->
+      <!--<id>fusj_private</id>-->
+      <!--<url>${m2.proxy}/content/repositories/fusj_private/</url>-->
+    <!--</repository>-->
+    <!--<snapshotRepository>-->
+      <!--<id>snapshots</id>-->
+      <!--<url>${m2.proxy}/content/repositories/snapshots/</url>-->
+    <!--</snapshotRepository>-->
+  <!--</distributionManagement>-->
 
   <distributionManagement>
     <repository>
-      <id>fusj_private</id>
-      <url>${m2.proxy}/content/repositories/fusj_private/</url>
+      <id>fusj-release</id>
+      <name>User Project Release</name>
+      <url>${m2.proxy}/content/repositories/fusj-release/</url>
     </repository>
+
+    <snapshotRepository>
+      <id>fusj-snapshots</id>
+      <name>User Project SNAPSHOTS</name>
+      <url>${m2.proxy}/content/repositories/fusj-snapshots/</url>
+    </snapshotRepository>
   </distributionManagement>
 
   <modules>
@@ -73,6 +108,8 @@
     <module>icare-dao</module>
     <module>icare-service</module>
     <module>icare-wechat-web</module>
+    <module>icare-recover-web-0.0.2</module>
+    <module>icare-controller</module>
   </modules>
 
   <name>icare</name>
