@@ -26,7 +26,10 @@
 	<bean id="propertiesReader"
 		  class="org.springframework.beans.factory.config.PropertiesFactoryBean">
 		<property name="locations">
-			<value>classpath:application.properties</value>
+			<list>
+				<value>classpath:application*.properties</value>
+				<value>classpath:application-wechat.properties</value>
+			</list>
 		</property>
 	</bean>
 
