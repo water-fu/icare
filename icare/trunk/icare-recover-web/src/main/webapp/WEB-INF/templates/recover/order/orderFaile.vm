@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta a name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body class="user_index">
+<div class="container guide">
+    <div class="row">
+        <header class="tc">
+            <a href="javascript:goBack()" class="fl">&lt;</a>
+            <span>接单失败</span>
+        </header>
+        <div class="content order">
+            <div class="lostorder">
+                <img src="$!{CONTEXT_PATH}/static/img/lost.png" alt="" />
+                <h5>非常遗憾，此次您无法为E帮护的患者服务!</h5>
+            </div>
+            <p class="reson">请选择或输入拒单理由：</p>
+            <div class="select">
+                <select name="" class="form-control">
+                    <option value="时间无空档">时间无空档</option>
+                    <option value="时间无空档">订单冲突</option>
+                    <option value="时间无空档">休息</option>
+                </select>
+            </div>
+            <textarea placeholder="简单描述理由"></textarea>
+            <button class="btn btn-orange refuse">确认拒单</button>
+        </div>
+        <div class="footer fixed">
+            <p>客服电话：<b>400-158-1616</b></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+<script type="text/javascript">
+    function goBack() {
+        location.href = base + '/order/orderDetail?id=$!{request.getParameter('id')}';
+    }
+</script>

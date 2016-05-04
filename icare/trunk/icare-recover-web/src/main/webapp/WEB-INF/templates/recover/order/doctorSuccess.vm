@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta a name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body class="user_index">
+<div class="container guide">
+    <div class="row">
+        <header>
+            <a href="javascript:history.go(-1)" class="fl"><i class="iconfont icon-errowleft"></i></a>
+            <span>派单完成</span>
+        </header>
+        <div class="content order">
+            <div class="orderok">
+                <h4>患者<span>[李小蕊]</span>的订单[1137]已完成派单！</h4>
+                <span class="gray">对接专家：</span>
+                <p>【北京大学第三附属医院】【神经外科】【郑晓龙】</p>
+                <p class="gray m-t-xl"><img src="$!{CONTEXT_PATH}/static/img/clock.png" alt="" />请您准时联系医生确认接单。</p>
+            </div>
+            <button class="btn btn-orange" onclick="goMyOrder()">查看我的订单</button>
+        </div>
+        <div class="footer fixed">
+            <p>客服电话：<b>400-158-1616</b></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+<script type="text/javascript">
+    function goMyOrder() {
+        location.href = base + '/order/myOrder';
+    }
+</script>

@@ -71,7 +71,7 @@
                         </div>
                     </li>
 
-                    <li class="clearfix b-b">
+                    <li class="clearfix">
                         <label class="control-label col-xs-3 add_head"><i class="iconfont icon-iconfontjian jian3"></i></label>
                         <div class="col-xs-9 time">
                             <input type="text" class="form-control" id="show3" placeholder="请选择" readonly style="background-color: #FFF" />

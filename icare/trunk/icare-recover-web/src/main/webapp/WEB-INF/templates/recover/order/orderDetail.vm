@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+
+    <style type="text/css">
+        input[readonly] {
+            background-color: #FFF !important;
+        }
+    </style>
+</head>
+<body class="fill">
+<div class="container guide">
+    <div class="row">
+        <header>
+            <a href="javascript:goBack();"><i class="iconfont icon-errowleft fl"></i></a>
+            <span class="m-r-xl">新派订单详情</span>
+        </header>
+
+        <ul class="infoput clearfix detail">
+            <li class="clearfix b-b">
+                <p class="tips">患者信息</p>
+                <p class="patient">$!{orderBooking.patientName} <span class="ico">$!{cache.getDescByValue("SEX", "$!{orderBooking.patientSex}")}</span><span class="ico">$!{orderBooking.patientAge}</span></p>
+                <p class="addr"><a href="javascript:void(0)" id="map" style="margin-right: 0px; margin-bottom: -4px;" ></a>$!{zone.getZoneByCode($!{orderBooking.city}).getName()}$!{zone.getZoneByCode($!{orderBooking.country}).getName()}$!{orderBooking.address}</p>
+            </li>
+            <li class="clearfix">
+                <p class="desc m-t-sm">$!{orderBooking.presentSituation}</p>
+            </li>
+        </ul>
+
+        <ul class="infoput clearfix contactinfo">
+            <li class="b-b pad">上门联系人及时间段：</li>
+            <li class="clearfix b-b number">
+                <label class="control-label col-xs-3">$!{orderBooking.linkName}：</label>
+                <div class="col-xs-9">
+                    <p style="padding: 0 10px;"><a href="tel:$!{orderBooking.linkPhone}">$!{orderBooking.linkPhone}</a></p>
+                </div>
+            </li>
+            <li class="clearfix b-b">
+                <label class="control-label col-xs-2">起始：</label>
+                <div class="col-xs-10 time">
+                    <input type="text" class="form-control" value="$!{date0.startDate}" readonly />
+##                    <a href="#"></a>
+                </div>
+            </li>
+            <li class="clearfix">
+                <label class="control-label col-xs-2">结束：</label>
+                <div class="col-xs-10 time">
+                    <input type="text" class="form-control" value="$!{date0.endDate}" readonly />
+##                    <a href="#"></a>
+                </div>
+            </li>
+        </ul>
+        <ul class="infoput clearfix contactinfo">
+            <li class="clearfix b-b">
+                <label class="control-label col-xs-2">起始：</label>
+                <div class="col-xs-10 time">
+                    <input type="text" class="form-control" value="$!{date1.startDate}" readonly />
+##                    <a href="#"></a>
+                </div>
+            </li>
+            <li class="clearfix">
+                <label class="control-label col-xs-2">结束：</label>
+                <div class="col-xs-10 time">
+                    <input type="text" class="form-control" value="$!{date1.endDate}" readonly />
+##                    <a href="#"></a>
+                </div>
+            </li>
+        </ul>
+        <ul class="infoput clearfix contactinfo" style="margin-bottom: 68px;">
+            <li class="clearfix b-b">
+                <label class="control-label col-xs-2">起始：</label>
+                <div class="col-xs-10 time">
+                    <input type="text" class="form-control" value="$!{date2.startDate}" readonly />
+                ##                    <a href="#"></a>
+                </div>
+            </li>
+            <li class="clearfix">
+                <label class="control-label col-xs-2">结束：</label>
+                <div class="col-xs-10 time">
+                    <input type="text" class="form-control" value="$!{date2.endDate}" readonly />
+                ##                    <a href="#"></a>
+                </div>
+            </li>
+        </ul>
+        <div class="footer fixed">
+            #if($!{orderInfo.orderStatus} == '3')
+                <button class="btn btn-green wth" onclick="doSuccess()">接单</button>
+                <button class="btn btn-orange wth m-l-md"  onclick="doFaile()">拒单</button>
+            #elseif($!{orderInfo.orderStatus} == '6')
+                <button class="btn btn-green m-b-sm" onclick="doAssessment()">填写患者评估单</button>
+            #end
+        </div>
+    </div>
+</div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+<script>
+    $(function(){
+        $('#map').click(function(){
+            if($('.map').css('display')=='none'){
+                $('.map').slideDown();
+            }else{
+                $('.map').slideUp();
+            }
+        });
+    });
+
+    function goBack() {
+        location.href = base + '/order/myOrder';
+    }
+
+    function doSuccess() {
+        location.href = base + '/order/orderSuccess';
+    }
+
+    function doFaile() {
+        location.href = base + '/order/orderFaile?id=$!{orderInfo.id}'
+    }
+
+    function doAssessment() {
+        location.href = base + '/order/assessment';
+    }
+</script>

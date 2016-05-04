@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body class="fill">
+    <div class="container guide">
+        <div class="row">
+            <header class="tc">
+                <a href="javascript:history.go(-1)" class="fl"><i class="iconfont icon-errowleft"></i></a>
+                <span>我的订单</span>
+                <a href="#" class="fr m-l-sm">提交</a>
+                <a href="#" class="fr">暂存</a>
+            </header>
+            <div class="content order basic">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a href="#new" data-toggle="tab"><span>基本资料</span></a></li>
+                    <li><a href="#eva" data-toggle="tab"><span>健康状况</span></a></li>
+                    <li><a href="#serv" data-toggle="tab"><span class="b-n">附件上传</span></a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="new">
+                        <ul class="infoput clearfix">
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2">姓名</label>
+                                <div class="col-xs-10">
+                                    <input type="text" class="form-control" placeholder="请输入"/>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2">性别</label>
+                                <div class="col-xs-10 radio">
+                                    <a href="#" class="checked">男</a>
+                                    <a href="#">女</a>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2">年龄</label>
+                                <div class="col-xs-10">
+                                    <select name="" class="form-control" >
+                                        <option value="57">57</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2">名族</label>
+                                <div class="col-xs-10">
+                                    <select name="" class="form-control" >
+                                        <option value="57">汉族</option>
+                                    </select>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2">身份证</label>
+                                <div class="col-xs-10">
+                                    <input type="text" class="form-control" placeholder="1010101958012031541"/>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2">籍贯</label>
+                                <div class="col-xs-10">
+                                    <input type="text" class="form-control" placeholder="山西省太原市"/>
+                                </div>
+                            </li>
+                        </ul>
+                        <ul class="infoput clearfix">
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2"><b class="red">*</b>体温T</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" placeholder="C"/>
+                                </div>
+                                <label class="control-label col-xs-2"><b class="red">*</b>脉搏P</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" placeholder="次/分钟"/>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2"><b class="red">*</b>呼吸R</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" placeholder="次/分钟"/>
+                                </div>
+                                <label class="control-label col-xs-2"><b class="red">*</b>血压BP</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" placeholder="KPa"/>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-2"><b class="red">*</b>身高</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" placeholder="cm"/>
+                                </div>
+                                <label class="control-label col-xs-2"><b class="red">*</b>体重</label>
+                                <div class="col-xs-4">
+                                    <input type="text" class="form-control" placeholder="Kg"/>
+                                </div>
+                            </li>
+                            <li class="clearfix b-b">
+                                <label class="control-label col-xs-3"><b class="red">*</b>资料来源</label>
+                                <div class="col-xs-9">
+                                    <select name="" class="form-control">
+                                        <option value="本人">本人</option>
+                                        <option value="医院">医院</option>
+                                    </select>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="tab-pane fade" id="eva">
+                        <div class="status wide">
+                            <label class="col-xs-3"><span class="b-l-green">意识状态</span></label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio active">清醒</a>
+                                <a href="#" class="sta_radio">模糊</a>
+                                <a href="#" class="sta_radio">嗜睡</a>
+                                <a href="#" class="sta_radio">昏睡</a>
+                                <a href="#" class="sta_radio">瞻望</a>
+                                <a href="#" class="sta_radio">昏迷</a>
+                            </div>
+                        </div>
+                        <div class="status wide">
+                            <label class="col-xs-3"><span class="b-l-green">语言能力</span></label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio active">清楚</a>
+                                <a href="#" class="sta_radio">语言困难</a>
+                                <a href="#" class="sta_radio">昏睡</a>
+                                <a href="#" class="sta_radio">瞻望</a>
+                            </div>
+                        </div>
+                        <div class="status">
+                            <label class="col-xs-3"><span class="b-l-green">呼吸状况</span></label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio active">顺畅</a>
+                                <a href="#" class="sta_radio">不畅</a>
+                                <a href="#" class="sta_radio">有痰</a>
+                                <a href="#" class="sta_radio">易咳出</a>
+                                <a href="#" class="sta_radio">难咳出</a>
+                                <a href="#" class="sta_radio">稀</a>
+                                <a href="#" class="sta_radio">稠</a>
+                            </div>
+                            <label class="col-xs-3 seclabel">痰颜色</label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio">黄色</a>
+                                <a href="#" class="sta_radio">黄绿色</a>
+                                <a href="#" class="sta_radio">带血丝</a>
+                                <a href="#" class="sta_radio">白色</a>
+                            </div>
+                            <div class="col-xs-9 col-xs-offset-3">
+                                <a href="#" class="sta_radio active">喘憋</a>
+                                <a href="#" class="sta_radio">端坐呼吸</a>
+                            </div>
+                        </div>
+                        <div class="status wide">
+                            <div class="clearfix">
+                                <label class="col-xs-3"><span class="b-l-green">营养代谢</span></label>
+                            </div>
+                            <label class="col-xs-3 seclabel">食欲</label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio active">正常</a>
+                                <a href="#" class="sta_radio">增加</a>
+                                <a href="#" class="sta_radio">下降</a>
+                            </div>
+                            <label class="col-xs-3 seclabel">口腔黏膜</label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio">完整</a>
+                                <a href="#" class="sta_radio">溃疡</a>
+                                <a href="#" class="sta_radio">红肿</a>
+                            </div>
+                        </div>
+                        <div class="status wide">
+                            <div class="clearfix">
+                                <label class="col-xs-3"><span class="b-l-green">排泄</span></label>
+                            </div>
+                            <label class="col-xs-3 seclabel">排尿</label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio active">正常</a>
+                                <a href="#" class="sta_radio">尿失禁</a>
+                                <a href="#" class="sta_radio">尿储留</a>
+                                <a href="#" class="sta_radio">尿频</a>
+                                <a href="#" class="sta_radio">血尿</a>
+                                <a href="#" class="sta_radio">尿蛋白</a>
+                                <p class="p_info">更换尿管时间：<span class="fr">2016-03-03</span></p>
+                            </div>
+                            <label class="col-xs-3 seclabel">排便</label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio b-n">正常</a>
+                                <div class="inputbox"><input type="text" />次/日</div>
+                                <a href="#" class="sta_radio">腹泻</a>
+                            </div>
+                            <div class="col-xs-9 col-xs-offset-3">
+                                <a href="#" class="sta_radio b-n">便秘</a>
+                                <div class="inputbox"><input type="text" />/</div>
+                                <a href="#" class="sta_radio">失禁</a>
+                            </div>
+                            <div class="col-xs-9 col-xs-offset-3">
+                                <a href="#" class="sta_radio b-n">粪便形状</a>
+                                <div class="inputbox"><input type="text" style="width: 132%;"/></div>
+                            </div>
+                        </div>
+                        <div class="status">
+                            <label class="col-xs-3"><span class="b-l-green">活动</span></label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio active">自我活动</a>
+                                <a href="#" class="sta_radio">需协助</a>
+                                <a href="#" class="sta_radio">完全依赖</a>
+                            </div>
+                        </div>
+                        <div class="status wide">
+                            <label class="col-xs-3"><span class="b-l-green">睡眠</span></label>
+                            <div class="col-xs-9">
+                                <a href="#" class="sta_radio active">好</a>
+                                <a href="#" class="sta_radio">欠佳</a>
+                                <a href="#" class="sta_radio">不好</a>
+                                <a href="#" class="sta_radio">意识欠佳</a>
+                                <a href="#" class="sta_radio">药物辅助</a>
+                            </div>
+                        </div>
+                        <div class="status wide">
+                            <div class="clearfix">
+                                <label class="col-xs-3"><span class="b-l-green">健康管理</span></label>
+                            </div>
+                            <label class="col-xs-3 seclabel">既往病史</label>
+                            <div class="col-xs-9">
+                                <input type="text" class="full-input" placeholder="请输入"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="serv">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+<script type="text/javascript">
+    $(function(){
+        $('.radio>a').click(function(){
+            if(!$(this).hasClass('checked')){
+                $(this).addClass('checked').siblings().removeClass('checked');
+            }
+        });
+    })
+</script>

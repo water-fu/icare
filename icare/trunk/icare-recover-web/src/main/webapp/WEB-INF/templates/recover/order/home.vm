@@ -13,7 +13,7 @@
 <div class="container">
     <div class="row">
         <header class="tc">
-            <a href="javascript:history.go(-1)" class="fl">&lt;</a>
+            <a href="javascript:history.void(0);" class="fl">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</a>
             <span>我的E帮护</span>
             <a href="javascript:void(0)" class="fr infotips current"></a>
         </header>
@@ -21,26 +21,25 @@
             <div class="headpic">
                 <img src="$!{CONTEXT_PATH}/static/img/photo.png" alt="" />
             </div>
-            <p class="name">李德生</p>
-            <p>A级康复管家/高级康复理疗师</p>
+            <p class="name">$!{sessionDetail.getSessionDetail($!{request}).getName()}</p>
         </div>
         <div class="card tc clearfix">
             <div class="col-xs-4">
-                <p class="num">2</p>
+                <p class="num">$!{stat.startNum}</p>
                 <p>新派订单</p>
             </div>
             <div class="col-xs-4">
-                <p class="red num">3</p>
+                <p class="red num">$!{stat.assessmentNum}</p>
                 <p>待评估订单</p>
             </div>
             <div class="col-xs-4 b-n">
-                <p class="num">2</p>
+                <p class="num">$!{stat.serviceNum}</p>
                 <p>服务中订单</p>
             </div>
         </div>
         <div class="cardnav">
             <div class="wrapbox clearfix">
-                <a class="col-xs-3">
+                <a class="col-xs-3" href="$!{CONTEXT_PATH}/order/myOrder">
                     <img src="$!{CONTEXT_PATH}/static/img/allorder.png" alt="" />
                     <p>全部订单</p>
                 </a>

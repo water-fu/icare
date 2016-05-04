@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta a name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body class="fill">
+    <div class="container guide">
+        <div class="row">
+            <header class="tc">
+                <a href="javascript:history.go(-1)" class="fl"><i class="iconfont icon-errowleft"></i></a>
+                <span>我的订单</span>
+            </header>
+            <div class="content order dispatch">
+                <ul id="myTab" class="nav nav-tabs">
+                    <li class="active"><a href="#new" data-toggle="tab"><span>可选医生</span></a></li>
+                    <li><a href="#eva" data-toggle="tab"><span class="b-n">患者信息</span></a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                    <div class="tab-pane fade in active" id="new">
+##                        <div class="keyinfo">
+##                            <div class="col-xs-6">
+##                                <select name="" class="form-control">
+##                                    <option value="">时间段</option>
+##                                </select>
+##                            </div>
+##                            <div class="col-xs-6">
+##                                <select name="" class="form-control">
+##                                    <option value="">海定区</option>
+##                                    <option value="">朝阳区</option>
+##                                </select>
+##                            </div>
+##                        </div>
+                        <div class="doctor">
+                            <p>
+                                <img src="$!{CONTEXT_PATH}/static/img/photo.png" alt="" />
+                                <span class="name">郑晓龙</span>
+                                <span class="post">主任专科/神经外科</span>
+                                <a href="javascript:dispatchDoctor()" class="btn-dispatch fr" data-toggle="tooltip" data-placement="bottom"
+                                   title="">派单</a>
+                            </p>
+                            <p class="b-b p-b-sm">
+                                <span class="company">北京大学第三附属医院</span>
+                                <span class="number fr">13800138000</span>
+                            </p>
+                            <div class="bespoke">
+                                <div class="col-xs-3"><span class="checktip already"></span>空闲</div>
+                                <div class="col-xs-3"><span class="checktip full"></span>坐诊</div>
+##                                <div class="col-xs-3"><span class="checktip full"></span>已满</div>
+##                                <div class="col-xs-3"><span class="checktip talk"></span>可协商</div>
+                                <table class="table">
+                                    <tr>
+                                        <th>周一</th>
+                                        <th>周二</th>
+                                        <th>周三</th>
+                                        <th>周四</th>
+                                        <th>周五</th>
+                                        <th>周六</th>
+                                        <th>周日</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>上午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>上午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>上午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>上午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>上午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>上午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>上午</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>下午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>下午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>下午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>下午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>下午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>下午</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>下午</p>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>晚上</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>晚上</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>晚上</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>晚上</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>晚上</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip full"></span>
+                                            <p>晚上</p>
+                                        </td>
+                                        <td>
+                                            <span class="checktip already"></span>
+                                            <p>晚上</p>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="eva">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+<script type="text/javascript">
+    $(function () {
+        $("[data-toggle='tooltip']").tooltip('show');
+
+    });
+
+    function dispatchDoctor() {
+        location.href = base + '/order/doctorSuccess';
+    }
+</script>

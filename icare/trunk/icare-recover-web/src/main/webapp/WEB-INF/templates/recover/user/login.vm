@@ -113,6 +113,7 @@
             success: function(data) {
                 if(data.flag) {
                     location.href = '$!{CONTEXT_PATH}/recover/index';
+##                    location.href = '$!{CONTEXT_PATH}/order/home';
                 } else {
                     ajaxErrorCallBack(data);
                     $('#login').removeClass('btn-gray');

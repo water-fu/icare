@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body class="role">
+<div class="container">
+    <div class="row">
+        <header>
+            <a href="#" class="fl reback"><i class="iconfont icon-errowleft"></i>返回</a>
+        </header>
+        <div class="content tc">
+            <h3 class="m-t-lg">E帮护用户登录</h3>
+            <p class="tip">请选择自己的角色</p>
+            <div class="rolebox clearfix m-t-lg m-b-lg">
+                <a href="index.html" class="col-xs-6 active">
+                    <div class="pic"><img src="$!{CONTEXT_PATH}/static/img/check.png" alt="" /></div>
+                    <p>我是用户</p>
+                </a>
+                <a href="#" class="col-xs-6">
+                    <div class="pic"><img src="$!{CONTEXT_PATH}/static/img/check.png" alt="" /></div>
+                    <p>我是医生</p>
+                </a>
+                <a href="#" class="col-xs-6">
+                    <div class="pic"><img src="$!{CONTEXT_PATH}/static/img/check.png" alt="" /></div>
+                    <p>我是康复管家</p>
+                </a>
+                <a href="#" class="col-xs-6">
+                    <div class="pic"><img src="$!{CONTEXT_PATH}/static/img/check.png" alt="" /></div>
+                    <p>我是康复治疗师</p>
+                </a>
+            </div>
+            <img src="$!{CONTEXT_PATH}/static/img/title.png" alt="" class="kouhao"/>
+        </div>
+        <div class="footer">
+            <p>客服电话：<b>400-158-1616</b></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+#parse("addon/javascript.vm")
