@@ -9,7 +9,7 @@ public class LoginUrlConstants {
     /**
      * 微信登陆中间请求
      */
-    public static final String WE_CHAT_MIDDLE_URL = "http://iwechat.ngrok.natapp.cn?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
+    public static final String WE_CHAT_MIDDLE_URL = "http://wechat.ngrok.natapp.cn/home?appid=APPID&redirect_uri=REDIRECT_URI&response_type=code&scope=SCOPE&state=STATE#wechat_redirect";
 
     /**
      * 微信登陆请求
