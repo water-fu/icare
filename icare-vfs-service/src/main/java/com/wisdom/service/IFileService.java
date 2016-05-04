@@ -145,6 +145,7 @@ public interface IFileService {
 	 * 
 	 */
 	public String getHttpUrl(String fileid, FileServerConfig fileServerConfig) throws Exception;
+
 	public String getHttpUrl(String fileid) throws Exception;
 
 	/**
