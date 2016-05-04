@@ -163,6 +163,25 @@ public class RecoverServiceImpl implements IRecoverService {
     }
 
     /**
+     * 根据账户编号获取康复师编号
+     * @param id
+     * @return
+     */
+    @Override
+    public Recover findRecoverByAccountId(Integer id) {
+        RecoverExample example = new RecoverExample();
+        example.createCriteria().andAccountIdEqualTo(id);
+
+        List<Recover> list = recoverMapper.selectByExample(example);
+
+        if(CollectionUtils.isNotEmpty(list)) {
+            return list.get(0);
+        }
+
+        return null;
+    }
+
+    /**
      * 插入认证信息
      * @param recover
      * @param headFileId
