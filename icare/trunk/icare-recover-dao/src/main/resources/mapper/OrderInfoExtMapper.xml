@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.wisdom.dao.mapper.OrderInfoExtMapper" >
+
+  <!-- 根据订单状态和康复编码统计 -->
+  <select id="qryOrderNumByRecoverIdAndStatus" resultType="java.lang.Integer" parameterType="java.util.Map">
+    select count(1) from t_order_info a, t_order_booking b
+    where a.ID = b.ORDER_ID
+      and a.ORDER_STATUS in
+        <foreach collection="ORDER_STATUS" item="listItem" open="(" close=")" separator="," >
+          #{listItem}
+        </foreach>
+      and b.RECOVER_ID = #{RECOVER_ID}
+      and a.IS_DEL = #{IS_DEL}
+  </select>
+
+  <!-- 根据订单状态和康复编码统计 -->
+  <select id="qryOrderListByRecoverIdAndStatus" resultType="java.util.Map" parameterType="java.util.Map">
+    select a.*, b.*
+    from t_order_info a, t_order_booking b
+    where a.ID = b.ORDER_ID
+    and a.ORDER_STATUS in
+    <foreach collection="ORDER_STATUS" item="listItem" open="(" close=")" separator="," >
+      #{listItem}
+    </foreach>
+    and b.RECOVER_ID = #{RECOVER_ID}
+    and a.IS_DEL = #{IS_DEL}
+    <if test="limitClauseStart != null and limitClauseStart >= 0" >
+      limit #{limitClauseStart}, #{limitClauseCount}
+    </if>
+  </select>
+
+</mapper>
