@@ -6,17 +6,20 @@ import com.wisdom.dao.entity.Patient;
 import com.wisdom.dao.entity.PatientExample;
 import com.wisdom.dao.mapper.AccountMapper;
 import com.wisdom.dao.mapper.PatientMapper;
+import com.wisdom.entity.Select;
 import com.wisdom.entity.SessionDetail;
 import com.wisdom.exception.ApplicationException;
 import com.wisdom.service.IFileService;
 import com.wisdom.service.user.IPatientService;
 import com.wisdom.util.DateUtil;
+import com.wisdom.util.JackonUtil;
 import com.wisdom.util.Pinyin4jUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -93,6 +96,47 @@ public class PatientServiceImpl implements IPatientService {
         }
 
         insertIdentification(patient, headFileId, bodyFileId, sessionDetail);
+    }
+
+    /**
+     * 患者下拉列表
+     * @param accountId
+     * @return
+     */
+    @Override
+    public String select(String type, Integer accountId) {
+        try {
+
+            PatientExample example = new PatientExample();
+            example.createCriteria().andAccountIdEqualTo(accountId);
+            List<Patient> list = patientMapper.selectByExample(example);
+
+            List<Select> selectList = new ArrayList<>();
+            if(CollectionUtils.isEmpty(list)) {
+                Select select = new Select();
+                select.setText("空");
+                select.setValue("-1");
+
+                selectList.add(select);
+            } else {
+                for(Patient patient : list) {
+                    Select select = new Select();
+                    select.setText(patient.getName());
+
+                    String age = patient.getAge() == null ? "" : patient.getAge();
+                    String sex = patient.getSex() == null ? "" : patient.getSex();
+                    select.setValue(age + "," + sex);
+
+                    selectList.add(select);
+                }
+            }
+            String result = JackonUtil.writeEntity2JSON(selectList);
+
+            return result;
+
+        } catch (Exception ex) {
+            throw new ApplicationException("患者下拉列表异常:" + ex.getMessage(), ex);
+        }
     }
 
     /**
