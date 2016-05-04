@@ -2,7 +2,6 @@ package com.wisdom.service.basic;
 
 import com.wisdom.dao.entity.Zone;
 import com.wisdom.entity.PageInfo;
-import com.wisdom.entity.ZoneSelect;
 import com.wisdom.entity.ZoneTree;
 
 import java.util.List;

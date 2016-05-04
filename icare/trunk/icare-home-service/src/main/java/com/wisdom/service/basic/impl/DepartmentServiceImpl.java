@@ -1,11 +1,16 @@
 package com.wisdom.service.basic.impl;
 
+import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.dao.entity.Department;
 import com.wisdom.dao.entity.DepartmentExample;
+import com.wisdom.dao.entity.Hospital;
+import com.wisdom.dao.entity.HospitalExample;
 import com.wisdom.dao.mapper.DepartmentMapper;
 import com.wisdom.entity.PageInfo;
 import com.wisdom.service.basic.IDepartmentService;
 import com.wisdom.util.Pinyin4jUtil;
+import com.wisdom.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,8 +33,8 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
 	@Override
 	public PageInfo list(Department department, PageInfo pageInfo) {
-		department.setIsDel("0");
-		DepartmentExample departmentExample = new DepartmentExample();
+		department.setIsDel(SysParamDetailConstant.IS_DEL_FALSE);
+		DepartmentExample departmentExample = getCondition(department);
 
 		if (null != pageInfo && pageInfo.getPageStart() != null) {
 			departmentExample.setLimitClauseCount(pageInfo.getPageCount());
@@ -79,4 +84,33 @@ public class DepartmentServiceImpl implements IDepartmentService {
 
 	}
 
+	/**
+	 * 组装查询条件
+	 * @param department
+	 * @return
+	 */
+	private DepartmentExample getCondition(Department department) {
+		DepartmentExample example = new DepartmentExample();
+
+		if(null != department) {
+			DepartmentExample.Criteria criteria = example.createCriteria();
+
+			if(StringUtil.isNotEmptyObject(department.getName())) {
+				criteria.andNameLike(department.getName());
+			}
+
+			if(StringUtil.isNotEmptyObject(department.getSimplePinyin())) {
+				criteria.andSimplePinyinLike(department.getSimplePinyin());
+			}
+
+			if(StringUtils.isNotBlank(department.getIsDel())) {
+				criteria.andIsDelEqualTo(department.getIsDel());
+			}
+
+		}
+
+		example.setOrderByClause(" simple_pinyin asc ");
+
+		return example;
+	}
 }

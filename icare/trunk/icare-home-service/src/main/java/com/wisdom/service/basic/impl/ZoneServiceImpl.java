@@ -8,7 +8,6 @@ import com.wisdom.dao.entity.Zone;
 import com.wisdom.dao.entity.ZoneExample;
 import com.wisdom.dao.mapper.ZoneMapper;
 import com.wisdom.entity.PageInfo;
-import com.wisdom.entity.ZoneSelect;
 import com.wisdom.entity.ZoneTree;
 import com.wisdom.service.basic.IZoneService;
 import com.wisdom.util.DateUtil;
@@ -18,7 +17,6 @@ import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -101,7 +99,6 @@ public class ZoneServiceImpl implements IZoneService {
      * 新增
      * @param zone
      */
-    @CachePut(value = CacheNameConstant.ZONE_CACHE, key = "#zone.code")
     @Override
     public Zone add(Zone zone) {
         Zone parentZone = zoneMapper.selectByPrimaryKey(Integer.parseInt(zone.getParentId()));
@@ -134,7 +131,6 @@ public class ZoneServiceImpl implements IZoneService {
      * 修改保存
      * @param zone
      */
-    @CachePut(value = CacheNameConstant.ZONE_CACHE, key = "#zone.code")
     @Override
     public Zone modify(Zone zone) {
         zone.setSimplePinyin(Pinyin4jUtil.translate(zone.getName(), Pinyin4jUtil.RET_PINYIN_TYPE_HEADCHAR));
@@ -150,7 +146,6 @@ public class ZoneServiceImpl implements IZoneService {
      * 删除
      * @param zone
      */
-    @CacheEvict(value = CacheNameConstant.ZONE_CACHE, key = "#zone.code")
     @Override
     public void delete(Zone zone) {
         zone.setIsDel(SysParamDetailConstant.IS_DEL_TRUE);

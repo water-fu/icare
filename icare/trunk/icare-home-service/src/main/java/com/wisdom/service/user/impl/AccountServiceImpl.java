@@ -20,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -196,9 +197,15 @@ public class AccountServiceImpl implements IAccountService {
      */
     @Override
     public Account login(Account account) {
+        List<String> types = new ArrayList<>();
+        types.add(SysParamDetailConstant.ACCOUNT_TYPE_KF);
+        types.add(SysParamDetailConstant.ACCOUNT_TYPE_SYSTEM);
+        types.add(SysParamDetailConstant.ACCOUNT_TYPE_ADMIN);
+
         AccountExample example = new AccountExample();
         example.createCriteria().andPhoneNoEqualTo(account.getPhoneNo())
-                .andTypeEqualTo(account.getType())
+                // 后台用户客服、系统管理员、后台管理员登陆
+                .andTypeIn(types)
                 .andIsDelEqualTo(SysParamDetailConstant.IS_DEL_FALSE);
 
         List<Account> list = accountMapper.selectByExample(example);
