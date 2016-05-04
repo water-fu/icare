@@ -880,3 +880,175 @@ a.example{
 .gallery>img{
 	width: 100%;
 }
+/*role_login.html css*/
+.role .reback{
+	font-size: 1.5rem;
+}
+.role .reback i{
+	font-size: 3rem;
+	color: #77cc00;
+	vertical-align: sub;
+}
+.role .tip{
+	color: #999999;
+}
+.rolebox{
+	width: 100%;
+	margin: 30px auto;
+}
+.rolebox .pic{
+	width: 100px;
+	height: 100px;
+	margin: 0px auto;
+	border: 1px solid #FFF;
+	border-radius: 100px;
+	position: relative;
+	background: #7076c2 url(../img/role.png) no-repeat;
+	-webkit-background-size: 310%;
+	background-size: 310%;
+	background-position: 0px 0px;
+}
+.rolebox a:nth-child(2) .pic{
+	background-position: -202px 0px;
+}
+.rolebox a:nth-child(3) .pic{
+	background-position: 0px -150px;
+}
+.rolebox a:nth-child(4) .pic{
+	background-position: -206px -150px;
+}
+.rolebox .pic>img{
+	position: absolute;
+	width: 95%;
+	bottom: 0;
+	left: 2px;
+	display: none;
+}
+.rolebox a.active .pic>img{
+	display: inline;
+}
+.rolebox a p{
+	color: #5d5d5d;
+	font-size:1.5rem;
+	margin-top: 10px;
+}
+.role .kouhao{
+	width: 60%;
+	margin: 10px auto;
+}
+/*index.html css*/
+.user_index header{
+	background-color: #3bc22d;
+}
+.user_index header img{
+	width: 60px;
+}
+.user_index .area{
+	float: left;
+	outline: none;
+	color: #fff;
+	border:none;
+	appearance:none;
+	-moz-appearance:none;
+	-webkit-appearance:none;
+	padding-right: 20px;
+	background:url("../img/arrowdown.png") no-repeat scroll right center transparent;
+	background-color:rgba(59, 194, 45, 0.5);
+	border-color: #3bc22d;
+	-webkit-background-size: 15px;
+	background-size: 15px;
+}
+select::-ms-expand { display: none; }
+.user_index .card{
+	background-color: #fff;
+	border-radius: 5px;
+	width: 96%;
+	margin: 15px auto;
+	padding-bottom: 15px;
+}
+.user_index .card h4{
+	padding:5px 10px;
+	border-bottom: 1px solid #ddd;
+
+}
+.user_index .card .ico{
+	display: inline-block;
+	height:30px;
+	width: 30px;
+	background: url(../img/indexico.png) no-repeat left center;
+	background-size: 725%;
+	vertical-align: middle;
+	margin-right: 5px;
+}
+.user_index .card img{
+	width:100%;
+}
+.user_index .mid_ico{
+	display: inline-block;
+	float: left;
+	width: 40px;
+	height: 40px;
+	border-radius: 100px;
+	background: #6cc660 url(../img/indexico.png) no-repeat -95px 4px;
+	background-size: 470%;
+}
+.user_index .name{
+	display: inline-block;
+	float: left;
+	font-size: 1.4rem;
+	width: 63%;
+	margin: 0px 0px 0px 5px;
+}
+.user_index .quality .ico{
+	background-position: -60px -10px;
+}
+.user_index .two{
+	background-position: -149px 0px;
+}
+.nav_bottom{
+	position: fixed;
+	bottom:0;
+	left: 0;
+	width: 100%;
+	border-top: 1px solid #ddd;
+	background-color: #fff;
+}
+.nav_bottom li{
+	width: 25%;
+	float: left;
+}
+.nav_bottom li>a{
+	display: block;
+	text-align: center;
+	font-size: 1.2rem;
+	color: #666666;
+	padding: 5px 0px;
+}
+.nav_bottom li>a>i{
+	font-size: 1.8rem;
+}
+.nav_bottom li>a>p{
+	margin: 0px;
+}
+.nav_bottom li.active>a,
+.nav_bottom li.active>a>i{
+	color: #3bc22d;
+}
+.user_index .number{
+	padding: 20px 0px;
+	width: 100%;
+	text-align: center;
+	color: #888888;
+	font-size: 1.4rem;
+}
+.user_index .number span{
+	color: #3bc22d;
+}
+.user_index{
+	margin-bottom: 70px;
+	background: none;
+	background-color: #f3f3f3;
+}
+.line{
+	border-right: 1px solid #ddd;
+}

@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta a name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+
+    <link rel="stylesheet" type="text/css" href="$!{CONTEXT_PATH}/static/js/mui/2.9.0/mui.min.css" ></link>
+    <link rel="stylesheet" type="text/css" href="$!{CONTEXT_PATH}/static/js/mui/picker/mui.picker.min.css" ></link>
+    <link rel="stylesheet" type="text/css" href="$!{CONTEXT_PATH}/static/js/mui/picker/mui.poppicker.css" ></link>
+</head>
+<body class="fill">
+<div class="container guide">
+    <div class="row">
+        <header>
+            <a href="javascript:toIndex()"><i class="iconfont icon-errowleft fl"></i></a>
+            <span class="m-r-xl">预约-填写基本信息</span>
+        </header>
+        <form id="orderForm">
+            <input type="hidden" name="typeId" value="$!{request.getParameter("type")}">
+
+            <ul class="infoput clearfix">
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-2">姓名：</label>
+                    <div class="col-xs-10 time">
+                        <input type="text" name="patientName" id="patientName" class="form-control" placeholder="请输入" />
+                        <a href="javascript:void(0)" id="selPatient"></a>
+                    </div>
+                </li>
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-2">年龄：</label>
+                    <div class="col-xs-10">
+                        <input type="text" name="patientAge" id="patientAge" class="form-control" placeholder="请输入" />
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <label class="control-label col-xs-2">性别：</label>
+                    <div class="col-xs-10 radio">
+                        <a href="javascript:void(0)" class="checked" val="2">男</a>
+                        <a href="javascript:void(0)" val="1">女</a>
+                        <input type="hidden" name="patientSex" id="patientSex" value="1">
+                    </div>
+                </li>
+            </ul>
+            <ul class="infoput clearfix">
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-2">地址：</label>
+                    <div class="col-xs-10 address">
+                        <input type="text" id="city" class="form-control" placeholder="请选择" readonly style="background-color: #FFF" />
+                        <a href="javascript:void(0)" id="map" ></a>
+                        <input type="hidden" name="cityKey" id="cityKey">
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <label class="control-label col-xs-2"></label>
+                    <div class="col-xs-10">
+                        <input type="text" name="address" class="form-control" placeholder="请输入详细地址"/>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="infoput clearfix">
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-3">联系人：</label>
+                    <div class="col-xs-9 p-n time">
+                        <input type="text" name="linkName" id="linkName" class="form-control" placeholder="请输入"/>
+                        <a href="javascript:void(0)" id="selLink"></a>
+                    </div>
+                </li>
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-3">手机号码：</label>
+                    <div class="col-xs-9 p-n">
+                        <input type="text" name="linkPhone" id="linkPhone" class="form-control" placeholder="请输入"/>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <label class="control-label col-xs-3">患者关系：</label>
+                    <div class="col-xs-9 p-n">
+                        <select class="form-control" name="linkRelation">
+                            <option value="1">本人</option>
+                            <option value="2">父亲</option>
+                            <option value="3">爷爷</option>
+                        </select>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="infoput clearfix">
+                <li class="clearfix">
+                    <label class="control-label col-xs-3">诊断证明：</label>
+                    <div class="col-xs-9 p-n">
+
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="infoput clearfix">
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-3">时间段1：</label>
+                    <div class="col-xs-9 time">
+                        <input type="text" name="startDate1" class="form-control" placeholder="请选择开始时间" readonly style="background-color: #FFF"/>
+                        <a href="javascript:void(0);" data-options='{"beginYear": 2016, "endYear": 2080}' class="date"></a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <label class="control-label col-xs-3 add_head"></label>
+                    <div class="col-xs-9 time">
+                        <input type="text" name="endDate1" class="form-control" placeholder="请选择结束时间" readonly style="background-color: #FFF"/>
+                        <a href="javascript:void(0);" data-options='{"beginYear": 2016, "endYear": 2080}' class="date"></a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="infoput clearfix">
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-3">时间段2：</label>
+                    <div class="col-xs-9 time">
+                        <input type="text" name="startDate2" class="form-control" placeholder="请选择开始时间" readonly style="background-color: #FFF"/>
+                        <a href="javascript:void(0);" data-options='{"beginYear": 2016, "endYear": 2080}' class="date"></a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <label class="control-label col-xs-3 add_head"></label>
+                    <div class="col-xs-9 time">
+                        <input type="text" name="endDate2" class="form-control" placeholder="请选择结束时间" readonly style="background-color: #FFF"/>
+                        <a href="javascript:void(0);" data-options='{"beginYear": 2016, "endYear": 2080}' class="date"></a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="infoput clearfix">
+                <li class="clearfix b-b">
+                    <label class="control-label col-xs-3">时间段3：</label>
+                    <div class="col-xs-9 time">
+                        <input type="text" name="startDate3" class="form-control" placeholder="请选择开始时间" readonly style="background-color: #FFF"/>
+                        <a href="javascript:void(0);" data-options='{"beginYear": 2016, "endYear": 2080}' class="date"></a>
+                    </div>
+                </li>
+                <li class="clearfix">
+                    <label class="control-label col-xs-3 add_head"></label>
+                    <div class="col-xs-9 time">
+                        <input type="text" name="startDate3" class="form-control" placeholder="请选择结束时间" readonly style="background-color: #FFF"/>
+                        <a href="javascript:void(0);" data-options='{"beginYear": 2016, "endYear": 2080}' class="date"></a>
+                    </div>
+                </li>
+            </ul>
+
+            <ul class="infoput clearfix">
+                <li class="clearfix describe">
+                    <label class="control-label col-xs-3">主要情况：</label>
+                    <div class="col-xs-9 p-n">
+                        <textarea rows="6" name="presentSituation" class="form-control" placeholder="请描述医院诊断、目前状态等..."></textarea>
+                        <a href="javascript:void(0)">语音输入</a>
+                    </div>
+                </li>
+            </ul>
+
+        </form>
+        <div class="tc">
+            <a href="javascript:void(0)" class="btn btn-login save">预约</a>
+        </div>
+        <div class="footer">
+            <p>客服电话：<b>400-158-1616</b></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+
+<script src="$!{CONTEXT_PATH}/static/js/mui/2.9.0/mui.min.js" ></script>
+<script src="$!{CONTEXT_PATH}/static/js/mui/picker/mui.picker.min.js" ></script>
+<script src="$!{CONTEXT_PATH}/static/js/mui/picker/mui.poppicker.js" ></script>
+
+<script type="text/javascript">
+    $(function(){
+        $('.radio>a').click(function(){
+            if(!$(this).hasClass('checked')){
+                $(this).addClass('checked').siblings().removeClass('checked');
+                $('#sex').val($(this).addClass('checked').siblings().attr('val'));
+            }
+        });
+
+        $('.save').bind('click', save);
+    });
+
+    function save() {
+
+        var patientName = $('#orderForm').find('input[name="patientName"]').val();
+        if(patientName == '') {
+            alert('请填写患者姓名');
+            return;
+        }
+
+        var patientAge = $('#orderForm').find('input[name="patientAge"]').val();
+        if(patientAge == '') {
+            alert('请填写患者年龄');
+            return;
+        }
+
+        var cityKey = $('#orderForm').find('input[name="cityKey"]').val();
+        if(cityKey == '') {
+            alert('请填写地址');
+            return;
+        }
+
+        var address = $('#orderForm').find('input[name="address"]').val();
+        if(address == '') {
+            alert('请填写地址');
+            return;
+        }
+
+        var linkName = $('#orderForm').find('input[name="linkName"]').val();
+        if(linkName == '') {
+            alert('请填写联系人姓名');
+            return;
+        }
+
+        var linkPhone = $('#orderForm').find('input[name="linkPhone"]').val();
+        if(linkPhone == '') {
+            alert('请填写联系人手机号码');
+            return;
+        }
+
+        var startDate1 = $('#orderForm').find('input[name="startDate1"]').val();
+        var endDate1 = $('#orderForm').find('input[name="endDate1"]').val();
+
+        var startDate2 = $('#orderForm').find('input[name="startDate2"]').val();
+        var endDate2 = $('#orderForm').find('input[name="endDate2"]').val();
+
+        var startDate3 = $('#orderForm').find('input[name="startDate3"]').val();
+        var endDate3 = $('#orderForm').find('input[name="endDate3"]').val();
+
+        var flag = false;
+
+        if(startDate1 != '' && endDate1 != '') {
+            flag = true;
+        }
+        if(startDate2 != '' && endDate2 != '') {
+            flag = true;
+        }
+        if(startDate3 != '' && endDate3 != '') {
+            flag = true;
+        }
+
+        if(!flag) {
+            alert('至少填写一个时间段');
+            return;
+        }
+
+
+        $('.save').html('正在保存...');
+        $('.save').addClass('btn-gray');
+        $('.save').unbind('click');
+
+        $.ajax({
+            url: base + '/order/fill',
+            data: $('#orderForm').serialize(),
+            type: 'post',
+            error: function(XMLHttpRequest, textStatus, errorThrown) {
+                alert('网络异常，请稍后再试');
+
+                $('.save').html('预约');
+                $('.save').removeClass('btn-gray');
+                $('.save').bind('click', save);
+            },
+            success: function(data) {
+                if(data.flag) {
+                    location.href = base + '/order/success';
+                } else {
+                    ajaxErrorCallBack(data);
+
+                    $('.save').html('预约');
+                    $('.save').removeClass('btn-gray');
+                    $('.save').bind('click', save);
+
+                }
+            }
+        });
+    }
+
+    function toIndex() {
+        location.href = base + '/patient/index#';
+    }
+
+    function toFill() {
+        location.href = base + '/order/fill?type=$!{request.getParameter('type')}';
+    }
+
+    (function($$, doc) {
+        $$.init();
+
+        $$.ready(function() {
+            // 选择患者
+            var patientPicker = new $$.PopPicker({
+               layer: 1
+            });
+            $.ajax({
+                url: base + '/select/patientSelect',
+                type: 'get',
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                },
+                success: function(data) {
+                    if(data.flag) {
+                        data = eval(data.data);
+                        patientPicker.setData(data);
+
+                        var selPatient = doc.getElementById('selPatient');
+                        selPatient.addEventListener('tap', function(event) {
+                            $('input').blur();
+                            patientPicker.show(function(items) {
+                                var item = items[0];
+
+                                if(item.value != '-1') {
+                                    $('#patientName').val(item.text);
+
+                                    var val = item.value.split(',');
+
+                                    $('#patientAge').val(val[0]);
+                                    if(val[1] != '') {
+                                        $('#patientSex').val(val[1]);
+
+                                        $('.radio>a').removeClass('checked');
+                                        $('.radio>a[val=' + val[1] + ']').addClass('checked');
+                                    }
+                                }
+                            });
+                        }, false);
+                    }
+                }
+            });
+
+            // 选择联系人
+            var linkPicker = new $$.PopPicker({
+                layer: 1
+            });
+            $.ajax({
+                url: base + '/select/linkSelect',
+                type: 'get',
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                },
+                success: function(data) {
+                    if(data.flag) {
+                        data = eval(data.data);
+                        linkPicker.setData(data);
+
+                        var selLink = doc.getElementById('selLink');
+                        selLink.addEventListener('tap', function(event) {
+                            $('input').blur();
+                            linkPicker.show(function(items) {
+                                var item = items[0];
+
+                                if(item.value != '-1') {
+                                    $('#linkName').val(item.text);
+                                    $('#linkPhone').val(item.value);
+                                }
+                            });
+                        }, false);
+                    }
+                }
+            });
+
+            // 选择地址
+            var cityPicker1 = new $$.PopPicker({
+                layer: 3
+            });
+            $.ajax({
+                url: base + '/select/zoneSelect',
+                type: 'get',
+                error: function(XMLHttpRequest, textStatus, errorThrown) {
+
+                },
+                success: function(data) {
+                    if(data.flag) {
+                        data = eval(data.data);
+                        cityPicker1.setData(data);
+
+                        var button1 = doc.getElementById('map');
+                        button1.addEventListener('tap', function(event) {
+                            $('input').blur();
+                            cityPicker1.show(function(items) {
+                                var show = items[0].text + ' ' + items[1].text + ' ' + items[2].text;
+                                $('#city').val(show);
+
+                                var key = items[0].value + ',' + items[1].value + ',' + items[2].value;
+                                $('#cityKey').val(key);
+                            });
+                        }, false);
+                    }
+                }
+            });
+        });
+
+        $('.date').each(function() {
+            var _this = $(this);
+            _this[0].addEventListener('tap', function() {
+                $('input').blur();
+
+                var optionsJson = this.getAttribute('data-options') || '{}';
+                var options = JSON.parse(optionsJson);
+
+                // 设置当前时间
+                var val = _this.attr('val');
+                if(val) {
+                    options.value = val;
+                }
+
+                /*
+                 * 首次显示时实例化组件
+                 * 示例为了简洁，将 options 放在了按钮的 dom 上
+                 * 也可以直接通过代码声明 optinos 用于实例化 DtPicker
+                 */
+                var picker = new $$.DtPicker(options);
+                picker.show(function(rs) {
+                    /*
+                     * rs.value 拼合后的 value
+                     * rs.text 拼合后的 text
+                     * rs.y 年，可以通过 rs.y.vaue 和 rs.y.text 获取值和文本
+                     * rs.m 月，用法同年
+                     * rs.d 日，用法同年
+                     * rs.h 时，用法同年
+                     * rs.i 分（minutes 的第二个字母），用法同年
+                     */
+                    _this.attr('val', rs.value);
+                    _this.prev().val(rs.value);
+//                result.innerText = '选择结果: ' + rs.text;
+
+                    /*
+                     * 返回 false 可以阻止选择框的关闭
+                     * return false;
+                     */
+                    /*
+                     * 释放组件资源，释放后将将不能再操作组件
+                     * 通常情况下，不需要示放组件，new DtPicker(options) 后，可以一直使用。
+                     * 当前示例，因为内容较多，如不进行资原释放，在某些设备上会较慢。
+                     * 所以每次用完便立即调用 dispose 进行释放，下次用时再创建新实例。
+                     */
+//                    picker.dispose();
+                });
+            }, false);
+        });
+
+    })(mui, document);
+</script>

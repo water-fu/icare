@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta a name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body>
+<div class="container guide">
+    <div class="row">
+        <header>
+            <a href="javascript:toIndex()"><i class="iconfont icon-errowleft fl"></i></a>
+            <span class="m-r-xl">预约指南</span>
+        </header>
+        <div class="flow clearfix">
+            <div class="col-xs-6 one">
+                <p class="step"><b>1</b>第一步</p>
+                <p class="intro">填写基本信息</p>
+            </div>
+            <div class="col-xs-6 two">
+                <p class="step"><b>2</b>第二步</p>
+                <p class="intro">E帮护与您协商上门时间和地点</p>
+            </div>
+            <div class="col-xs-6 three">
+                <p class="step"><b>3</b>第三步</p>
+                <p class="intro">权威专家和康复师上门评估</p>
+            </div>
+            <div class="col-xs-6 four">
+                <p class="step"><b>4</b>第四步</p>
+                <p class="intro">量身定制康复计划</p>
+            </div>
+            <div class="col-xs-6 five">
+                <p class="step"><b>5</b>第五步</p>
+                <p class="intro">康复师上门指导康复训练。</p>
+            </div>
+            <div class="col-xs-6 six">
+                <p class="step"><b>6</b>第六步</p>
+                <p class="intro">康复进程跟踪，调整康复计划以达到目标。</p>
+            </div>
+        </div>
+        <a href="javascript:toFill()" class="order">
+            <p>立即预约</p>
+        </a>
+        <div class="footer">
+            <p>客服电话：<b>400-158-1616</b></p>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+<script type="text/javascript">
+    function toIndex() {
+        location.href = base + '/patient/index#';
+    }
+
+    function toFill() {
+        location.href = base + '/order/fill?type=$!{request.getParameter('type')}';
+    }
+</script>

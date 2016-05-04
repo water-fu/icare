@@ -112,7 +112,7 @@
             },
             success: function(data) {
                 if(data.flag) {
-                    location.href = '$!{CONTEXT_PATH}/user/index';
+                    location.href = '$!{CONTEXT_PATH}/patient/index';
                 } else {
                     ajaxErrorCallBack(data);
                     $('#login').removeClass('btn-gray');

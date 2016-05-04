@@ -9,13 +9,101 @@
 
     #parse("addon/css.vm")
 </head>
-<body>
-<div class="container over">
-    这是首页
-</div>
+
+<body class="user_index">
+    <div class="container guide">
+        <div class="row">
+            <header>
+                <select class="area">
+                    <option>北京市</option>
+                </select>
+                <img class="m-r-xl" src="$!{CONTEXT_PATH}/static/img/logo.png" alt="" style="margin-top: 9px;" />
+            </header>
+            <div class="content">
+                <div id="myCarousel" class="carousel slide">
+                    <!-- 轮播（Carousel）项目 -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="$!{CONTEXT_PATH}/static/img/banner.png" alt="First slide">
+                        </div>
+                        <div class="item">
+                            <img src="$!{CONTEXT_PATH}/static/img/banner.png" alt="Second slide">
+                        </div>
+                        <div class="item">
+                            <img src="$!{CONTEXT_PATH}/static/img/banner.png" alt="Third slide">
+                        </div>
+                    </div>
+                </div>
+                <div class="card clearfix">
+                    <h4><span class="ico"></span>康复服务</h4>
+                    <div class="form-group">
+                        <div class="col-xs-6">
+                            <img src="$!{CONTEXT_PATH}/static/img/pic1.png" alt="" class="booking1" />
+                        </div>
+                        <div class="col-xs-6">
+                            <img src="$!{CONTEXT_PATH}/static/img/pc2.png" alt="" class="booking2" />
+                        </div>
+                    </div>
+                </div>
+                <div class="card clearfix quality">
+                    <h4><span class="ico"></span>品质管理</h4>
+                    <div class="form-group">
+                        <div class="col-xs-6 line">
+                            <div class="mid_ico"></div>
+                            <p class="name">权威专家康复治疗师</p>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="mid_ico two"></div>
+                            <p class="name">服务规范化治疗个性化</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="number tc">
+                    客服电话：<span>400-158-1616</span>
+                </div>
+            </div>
+            <div class="nav_bottom">
+                <ul>
+                    <li class="active">
+                        <a href="#">
+                            <i class="iconfont icon-shouye"></i>
+                            <p>首页</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="iconfont icon-yiliao"></i>
+                            <p>服务</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="iconfont icon-dingdan"></i>
+                            <p>订单</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#">
+                            <i class="iconfont icon-wode"></i>
+                            <p>我的</p>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
 #parse("addon/javascript.vm")
 <script type="text/javascript">
+    $(function() {
+        $('.booking1').click(function() {
+           location.href = base + '/order/guide?type=1';
+        });
 
+        $('.booking2').click(function() {
+            location.href = base + '/order/guide?type=2';
+        });
+    });
 </script>

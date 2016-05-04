@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta a name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body class="over">
+    <div class="container guide">
+        <div class="row">
+            <header>
+                <a href="javascript:toIndex()"><i class="iconfont icon-errowleft fl"></i></a>
+                <span class="m-r-xl">预约完成</span>
+            </header>
+            <div class="content">
+                <img src="$!{CONTEXT_PATH}/static/img/order-over.png" alt="" />
+                <h4>感谢您预约E帮护的服务!</h4>
+                <p>预约已完成，请您静候专家和康复师上门评估。</p>
+                <br><br>
+                <p>
+                    <a href="javascript:toIndex()" class="btn btn-login">返回首页</a>
+                    <a href="javascript:void(0)" class="btn btn-login">查看订单</a>
+                </p>
+            </div>
+            <div class="footer">
+                <p>客服电话：<b>400-158-1616</b></p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
+#parse("addon/javascript.vm")
+<script type="text/javascript">
+    function toIndex() {
+        location.href = base + '/patient/index#';
+    }
+</script>
