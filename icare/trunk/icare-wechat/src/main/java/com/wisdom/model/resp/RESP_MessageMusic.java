@@ -1,7 +1,8 @@
 package com.wisdom.model.resp;
 
-import com.wechat.model.base.RESP_Base;
-import com.wechat.model.resp.sub.RESP_Music;
+
+import com.wisdom.model.base.RESP_Base;
+import com.wisdom.model.resp.sub.RESP_Music;
 
 /**
  * 响应音乐

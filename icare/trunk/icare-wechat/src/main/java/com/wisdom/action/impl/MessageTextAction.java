@@ -33,7 +33,7 @@ public class MessageTextAction extends BaseAction<REQ_MessageText> {
         String message = "";
 
 
-        if("".equals(content)) {
+        if("创建菜单".equals(content)) {
             int code = menuService.createMenu(WeChatUtil.initMenu());
             if(code == 0) {
                 message = ResponseUtil.initText(fromUserName, toUserName, "菜单创建成功");
@@ -42,7 +42,7 @@ public class MessageTextAction extends BaseAction<REQ_MessageText> {
                 message = ResponseUtil.initText(fromUserName, toUserName, "菜单创建失败");
             }
         }
-        else if("".equals(content)) {
+        else if("删除菜单".equals(content)) {
             int code = menuService.deleteMenu();
             if(code == 0) {
                 message = ResponseUtil.initText(fromUserName, toUserName, "菜单删除成功");

@@ -57,6 +57,7 @@ public class MenuServiceImpl implements IMenuService {
         JSONObject jsonObject = HttpClientUtil.doPostStr(url, menu);
         if(jsonObject != null){
             result = jsonObject.getInt("errcode");
+            System.out.println(jsonObject.getString("errmsg"));
         }
         return result;
     }

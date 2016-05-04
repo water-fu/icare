@@ -1,6 +1,7 @@
 package com.wisdom.model.resp;
 
-import com.wechat.model.base.RESP_Base;
+
+import com.wisdom.model.base.RESP_Base;
 
 /**
  * 响应文本消息
