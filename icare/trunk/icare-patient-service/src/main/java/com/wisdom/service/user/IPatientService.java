@@ -30,4 +30,11 @@ public interface IPatientService {
      * @param bodyImg
      */
     void identification(Patient patient, String headImg, String bodyImg, SessionDetail sessionDetail);
+
+    /**
+     * 患者下拉列表
+     * @param accountId
+     * @return
+     */
+    String select(String type, Integer accountId);
 }
