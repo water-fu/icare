@@ -838,6 +838,76 @@ public class AccountExample implements Serializable {
             return (Criteria) this;
         }
 
+        public Criteria andAuditDescIsNull() {
+            addCriterion("AUDIT_DESC is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescIsNotNull() {
+            addCriterion("AUDIT_DESC is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescEqualTo(String value) {
+            addCriterion("AUDIT_DESC =", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescNotEqualTo(String value) {
+            addCriterion("AUDIT_DESC <>", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescGreaterThan(String value) {
+            addCriterion("AUDIT_DESC >", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescGreaterThanOrEqualTo(String value) {
+            addCriterion("AUDIT_DESC >=", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescLessThan(String value) {
+            addCriterion("AUDIT_DESC <", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescLessThanOrEqualTo(String value) {
+            addCriterion("AUDIT_DESC <=", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescLike(String value) {
+            addCriterion("AUDIT_DESC like", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescNotLike(String value) {
+            addCriterion("AUDIT_DESC not like", value, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescIn(List<String> values) {
+            addCriterion("AUDIT_DESC in", values, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescNotIn(List<String> values) {
+            addCriterion("AUDIT_DESC not in", values, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescBetween(String value1, String value2) {
+            addCriterion("AUDIT_DESC between", value1, value2, "auditDesc");
+            return (Criteria) this;
+        }
+
+        public Criteria andAuditDescNotBetween(String value1, String value2) {
+            addCriterion("AUDIT_DESC not between", value1, value2, "auditDesc");
+            return (Criteria) this;
+        }
+
         public Criteria andParentIdIsNull() {
             addCriterion("PARENT_ID is null");
             return (Criteria) this;
