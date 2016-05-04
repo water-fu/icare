@@ -27,8 +27,7 @@
             </div>
             <!--card list-->
             <div class="btn-list">
-                <button class="btn btn-success" onclick="add()"><i class="iconfont icon-jia"></i>新增科室</button>
-                <button class="btn btn-blue" onclick="del()"><i class="iconfont icon-shanchu"></i>删除</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#add"><i class="iconfont icon-jia"></i>新增科室</button>
             </div>
 
             <!--table area-->
@@ -47,16 +46,197 @@
     </div>
 </div>
 
+<div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">新增医院</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal_wrap">
+                    <form id="addForm">
+                        <!--info table-->
+                        <table class="table table-bordered detailInfo">
+                            <tr>
+                                <td style="width: 10%;">科室名称<span class="star">*</span></td>
+                                <td style="width: 20%;">
+                                    <input class="form-control validate[required]" type="text" name="name" />
+                                </td>
+                                <td style="width: 10%;">科室类型<span class="star">*</span></td>
+                                <td style="width: 20%;">
+                                    <select class="form-control validate[required]" name="type">
+                                        <option value="">请选择</option>
+                                        #foreach($param in $!{cache.getListByKey("DEPARTMENT_TYPE")})
+                                            <option value="$!{param.pValue}">$!{param.pDesc}</option>
+                                        #end
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer border">
+                <button type="button" class="btn btn-success btn-baocun btn-add"><i class="iconfont icon-baocun"></i>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="iconfont icon-cuowu"></i>取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modify" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">修改医院</h4>
+            </div>
+            <div class="modal-body">
+                <div class="modal_wrap">
+                    <form id="modifyForm">
+                        <input type="hidden" name="id" value="$!{department.id}">
+
+                        <!--info table-->
+                        <table class="table table-bordered detailInfo">
+                            <tr>
+                                <td style="width: 10%;">科室名称<span class="star">*</span></td>
+                                <td style="width: 20%;">
+                                    <input class="form-control validate[required]" type="text" name="name" value="$!{department.name}" />
+                                </td>
+                                <td style="width: 10%;">科室类型<span class="star">*</span></td>
+                                <td style="width: 20%;">
+                                    <select class="form-control validate[required]" name="type">
+                                        <option value="">请选择</option>
+                                        #foreach($param in $!{cache.getListByKey("DEPARTMENT_TYPE")})
+                                            <option value="$!{param.pValue}">$!{param.pDesc}</option>
+                                        #end
+                                    </select>
+                                </td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer border">
+                <button type="button" class="btn btn-success btn-baocun btn-modify"><i class="iconfont icon-baocun"></i>保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="iconfont icon-cuowu"></i>取消</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <script type="text/javascript">
     $(function() {
         qryData('searchForm');
+
+        // 新增显示
+        $('#add').on('show.bs.modal', function (el) {
+            $('#addForm').validationEngine('hideAll');
+            $('#addForm')[0].reset();
+        });
+
+        // 保存
+        $('.btn-add').click(function() {
+            var flag = $('#addForm').validationEngine('validate');
+            if(!flag)
+                return;
+
+            showMask();
+
+            var url = base + '/department/add';
+            var data = $('#addForm').serialize();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                error : function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideMask();
+                },
+                success : function (data, textStatus) {
+                    if(data.flag) {
+                        hideMask();
+
+                        $('#add').modal('hide');
+                        qryData('searchForm');
+                    } else {
+                        hideMask();
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
+
+        // 修改按钮加载数据
+        $('#modify').on('show.bs.modal', function (el) {
+            $('#modifyForm').validationEngine('hideAll');
+            $('#modifyForm')[0].reset();
+
+            var invoker = $(el.relatedTarget);
+
+            var id = invoker.attr('id');
+
+            var url = base + '/department/get?id=' + id;
+            $.ajax({
+                url: url,
+                type: 'get',
+                error : function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert('系统错误');
+                    hideMask();
+                },
+                success : function (data, textStatus) {
+                    if(data.flag) {
+                        data = data.data;
+
+                        $('#modifyForm').find('input[name="id"]').val(data.id);
+                        $('#modifyForm').find('input[name="name"]').val(data.name);
+
+                        selectCheck('type', data.type);
+
+                        hideMask();
+                    } else {
+                        hideMask();
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
+
+        // 保存
+        $('.btn-modify').click(function() {
+            var flag = $('#modifyForm').validationEngine('validate');
+            if(!flag)
+                return;
+
+            showMask();
+
+            var url = base + '/department/edit';
+            var data = $('#modifyForm').serialize();
+            $.ajax({
+                url: url,
+                type: 'POST',
+                dataType: 'json',
+                data: data,
+                error : function (XMLHttpRequest, textStatus, errorThrown) {
+                    hideMask();
+                },
+                success : function (data, textStatus) {
+                    if(data.flag) {
+                        hideMask();
+
+                        $('#modify').modal('hide');
+                        qryData('searchForm');
+                    } else {
+                        hideMask();
+                        alert(data.msg);
+                    }
+                }
+            });
+        });
     });
 
-    function add() {
-        location.href = '$!{CONTEXT_PATH}/department/add#basic-department';
-    }
-
-    function del() {
-
+    function selectCheck(name, val, i) {
+        $('select[name=' + name + ']').find('option[value=' + val + ']').attr('selected', 'selected');
     }
 </script>

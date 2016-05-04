@@ -35,6 +35,15 @@
 
     $(function() {
         $('.btn_oper').click(function() {
+            var paginationDiv = $('#searchForm').parents('.paginationDiv');
+            var pageBar = paginationDiv.find('.pagerBar');
+            var oldCondition = convertToObject(pageBar.attr('oldCondition'));
+
+            sessionStorage.setItem('from', 'b');
+            sessionStorage.setItem('p_number', $(this).parents('#queryResultList').find('.p_number').val());
+            sessionStorage.setItem('pKey', oldCondition.pKey);
+            sessionStorage.setItem('pDesc', oldCondition.pDesc);
+
             load($(this).attr('src'));
         });
     });

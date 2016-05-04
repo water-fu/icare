@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 /**
- * 医院
+ * 科室
  * Created by fusj on 16/3/2.
  */
 @Controller
@@ -33,7 +33,7 @@ public class DepartmentController extends BaseController {
     private IDepartmentService departmentService;
 
     /**
-     * 医院信息首页
+     * 科室信息首页
      * @return
      */
     @RequestMapping(value = {"", "/", "index"}, method = RequestMethod.GET)
@@ -42,7 +42,7 @@ public class DepartmentController extends BaseController {
     }
 
     /**
-     * 医院列表信息
+     * 科室列表信息
      * @return
      */
     @RequestMapping(value = "list", method = RequestMethod.POST)
@@ -75,7 +75,7 @@ public class DepartmentController extends BaseController {
 
     /**
      * 新增保存
-     * @param hospital
+     * @param department
      * @return
      */
     @RequestMapping(value = "add", method = RequestMethod.POST)
@@ -111,7 +111,7 @@ public class DepartmentController extends BaseController {
 
     /**
      * 修改保存
-     * @param hospital
+     * @param department
      * @return
      */
     @RequestMapping(value = "edit", method = RequestMethod.POST)
@@ -131,7 +131,7 @@ public class DepartmentController extends BaseController {
 
     /**
      * 删除
-     * @param hospital
+     * @param department
      * @return
      */
     @RequestMapping(value = "delete", method = RequestMethod.POST)
@@ -142,6 +142,27 @@ public class DepartmentController extends BaseController {
         	departmentService.deleteDepartment(department.getId());
 
             ResultBean resultBean = new ResultBean(true);
+
+            return resultBean;
+        } catch (Exception ex) {
+            return ajaxException(ex);
+        }
+    }
+
+    /**
+     * 根据主键获取
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultBean get(Integer id) {
+        try {
+
+            Department department = departmentService.get(id);
+
+            ResultBean resultBean = new ResultBean(true);
+            resultBean.setData(department);
 
             return resultBean;
         } catch (Exception ex) {

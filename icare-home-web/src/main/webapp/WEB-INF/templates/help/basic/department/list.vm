@@ -27,7 +27,7 @@
                 $!{date.format('yyyy-MM-dd', $!{row.createTime})}
             </td>
             <td>
-                <a href="javascript:void(0)" class="btn_oper" src="$!{CONTEXT_PATH}/department/edit?id=$!{row.id}">修改</a>
+                <a href="javascript:void(0)" data-toggle="modal" data-target="#modify" class="btn_oper" id="$!{row.id}">修改</a>
                 <a href="javascript:void(0)" class="delete" src="$!{CONTEXT_PATH}/department/delete?id=$!{row.id}">删除</a>
             </td>
         </tr>
@@ -39,9 +39,6 @@
 <script type="text/javascript">
 
     $(function() {
-        $('.btn_oper').click(function() {
-            location.href = $(this).attr('src') + '#basic-department';
-        });
 
         // 删除
         $('.delete').click(function() {
@@ -63,7 +60,7 @@
                     if(data.flag) {
                         hideMask();
 
-                        location.reload();
+                        qryData('searchForm');
                     } else {
                         hideMask();
                         alert(data.msg);

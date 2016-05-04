@@ -1,8 +1,11 @@
 package com.wisdom.controller.common;
 
+import com.wisdom.constants.CommonConstant;
 import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.entity.ResultBean;
+import com.wisdom.entity.SessionDetail;
 import com.wisdom.exception.ApplicationException;
+import com.wisdom.util.CookieUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
@@ -11,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.context.request.WebRequest;
 
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
 

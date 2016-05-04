@@ -148,4 +148,25 @@ public class HospitalController extends BaseController {
             return ajaxException(ex);
         }
     }
+
+    /**
+     * 根据主键获取
+     * @param id
+     * @return
+     */
+    @RequestMapping(value = "get", method = RequestMethod.GET)
+    @ResponseBody
+    public ResultBean get(Integer id) {
+        try {
+
+            Hospital hospital = hospitalService.get(id);
+
+            ResultBean resultBean = new ResultBean(true);
+            resultBean.setData(hospital);
+
+            return resultBean;
+        } catch (Exception ex) {
+            return ajaxException(ex);
+        }
+    }
 }

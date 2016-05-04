@@ -75,7 +75,7 @@
                     if(data.flag) {
                         hideMask();
 
-                        location.reload();
+                        qryData('searchForm');
                     } else {
                         hideMask();
                         alert(data.msg);
