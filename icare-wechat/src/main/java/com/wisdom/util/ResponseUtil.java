@@ -1,8 +1,8 @@
 package com.wisdom.util;
 
-import com.wechat.constant.ResponseTypeContants;
-import com.wechat.model.resp.*;
-import com.wechat.model.resp.sub.*;
+import com.wisdom.constant.ResponseTypeContants;
+import com.wisdom.model.resp.*;
+import com.wisdom.model.resp.sub.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

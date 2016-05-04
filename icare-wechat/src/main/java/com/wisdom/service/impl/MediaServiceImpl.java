@@ -34,17 +34,18 @@ public class MediaServiceImpl implements IMediaService {
     @Override
     @Token
     public byte[] getMediaFile(String mediaId) {
-        AccessToken accessToken = (AccessToken) commonCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
-
-        String url = UrlConstant.MEDIA_DOWN_LOAD.replace("ACCESS_TOKEN", accessToken.getToken()).replace("MEDIA_ID", mediaId);
-
-        try {
-            HttpResponse httpResponse = HttpClientUtil.doDownStr(url);
-
-            return EntityUtils.toByteArray(httpResponse.getEntity());
-
-        } catch (Exception ex) {
-            throw new ApplicationException(ex.getMessage(), ex);
-        }
+//        AccessToken accessToken = (AccessToken) commonCache.get(CommonConstant.ACCESS_TOKEN_VALUE);
+//
+//        String url = UrlConstant.MEDIA_DOWN_LOAD.replace("ACCESS_TOKEN", accessToken.getToken()).replace("MEDIA_ID", mediaId);
+//
+//        try {
+//            HttpResponse httpResponse = HttpClientUtil.doDownStr(url);
+//
+//            return EntityUtils.toByteArray(httpResponse.getEntity());
+//
+//        } catch (Exception ex) {
+//            throw new ApplicationException(ex.getMessage(), ex);
+//        }
+        return null;
     }
 }

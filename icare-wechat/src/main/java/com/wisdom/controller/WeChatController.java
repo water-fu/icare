@@ -68,7 +68,7 @@ public class WeChatController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "", method = RequestMethod.POST)
+    @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json; charset=utf-8")
     @ResponseBody
     @Check(loginCheck = false)
     public String doPost(HttpServletRequest request) throws Exception {
@@ -109,5 +109,55 @@ public class WeChatController {
             logger.error("微信公众号请求失败:" + ex.getMessage(), ex);
             return "success";
         }
+    }
+
+    /**
+     * 获取微信config时的参数
+     * @return
+     */
+    @RequestMapping(value = "getWeChatConfigParam", method = RequestMethod.GET)
+    @ResponseBody
+    @Check(loginCheck = false)
+    public ResultBean getWeChatConfigParam(String url) {
+        try {
+            Map map = jsapiTicketService.sign(url);
+            map.put("appId", weChatSetting.getAppId());
+
+            // 需要获取接口权限
+            List<String> jsApiList = new ArrayList<>();
+            jsApiList.add("onMenuShareTimeline");
+            jsApiList.add("hideOptionMenu");
+            jsApiList.add("showMenuItems");
+            jsApiList.add("chooseImage");
+            jsApiList.add("uploadImage");
+
+            map.put("jsApiList", jsApiList);
+
+            ResultBean resultBean = new ResultBean(true);
+            resultBean.setData(map);
+
+            return resultBean;
+        } catch (Exception ex) {
+            return ajaxException(ex);
+        }
+    }
+
+    /**
+     * ajax请求异常返回
+     * @param ex
+     * @return
+     */
+    protected ResultBean ajaxException(Exception ex) {
+        logger.error(ex.getMessage(), ex);
+
+        ResultBean resultBean = new ResultBean(false);
+
+        if(ex instanceof ApplicationException) {
+            resultBean.setMsg(ex.getMessage());
+        } else {
+            resultBean.setMsg("系统出错了");
+        }
+
+        return resultBean;
     }
 }
