@@ -5,11 +5,11 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import java.util.List;
 
 /**
- * 行政区域下拉列表
+ * 下拉列表
  * Created by fusj on 16/4/21.
  */
 @JsonSerialize(include=JsonSerialize.Inclusion.NON_NULL)
-public class ZoneSelect {
+public class Select {
 
     /**
      * 值
@@ -24,7 +24,7 @@ public class ZoneSelect {
     /**
      * 下级
      */
-    private List<ZoneSelect> children;
+    private List<Select> children;
 
     public String getValue() {
         return value;
@@ -42,11 +42,11 @@ public class ZoneSelect {
         this.text = text;
     }
 
-    public List<ZoneSelect> getChildren() {
+    public List<Select> getChildren() {
         return children;
     }
 
-    public void setChildren(List<ZoneSelect> children) {
+    public void setChildren(List<Select> children) {
         this.children = children;
     }
 }

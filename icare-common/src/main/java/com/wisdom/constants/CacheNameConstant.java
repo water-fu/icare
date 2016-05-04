@@ -25,4 +25,9 @@ public class CacheNameConstant {
      * 默认缓存
      */
     public static final String DEFAULT = "default";
+
+    /**
+     * session信息
+     */
+    public static final String SESSION_CACHE = "sessionCache";
 }

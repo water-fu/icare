@@ -22,6 +22,12 @@ public class SystemSetting {
     @Value("#{propertiesReader['system.country']}")
     private String country;
 
+    /**
+     * 微信中间请求地址
+     */
+    @Value("#{propertiesReader['system.wechatMiddle']}")
+    private String wechatMiddleUrl;
+
     public Boolean getProductionMode() {
         return productionMode;
     }
@@ -36,5 +42,13 @@ public class SystemSetting {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getWechatMiddleUrl() {
+        return wechatMiddleUrl;
+    }
+
+    public void setWechatMiddleUrl(String wechatMiddleUrl) {
+        this.wechatMiddleUrl = wechatMiddleUrl;
     }
 }

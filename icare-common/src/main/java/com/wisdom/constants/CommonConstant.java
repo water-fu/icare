@@ -79,12 +79,12 @@ public class CommonConstant {
     /**
      * 查询单个
      */
-    public static final String SINGLE_TYPE = "single";
+    public static final String SINGLE_TYPE = "SINGLE_";
 
     /**
      * 查询列表
      */
-    public static final String LIST_TYPE = "list";
+    public static final String LIST_TYPE = "LIST_";
 
     /**
      * 数据库加密密钥
@@ -100,4 +100,24 @@ public class CommonConstant {
      * 行政区域缓存KEY
      */
     public static final String ZONE_SELECT_CACHE_VALUE = "ZONE_SELECT";
+
+    /**
+     * 省下拉列表缓存前缀
+     */
+    public static final String PROVICE_SELECT_PREFIX = "PROVICE_SELECT_P_";
+
+    /**
+     * 市下拉列表缓存前缀
+     */
+    public static final String CITY_SELECT_PREFIX = "CITY_SELECT_P_";
+
+    /**
+     * 县区下拉列表缓存前缀
+     */
+    public static final String COUNTRY_SELECT_PREFIX = "COUNTRY_SELECT_P_";
+
+    /**
+     * 单个地市前缀
+     */
+    public static final String ZONE_SINGLE_PREFIX = "ZONE_SINGLE_";
 }

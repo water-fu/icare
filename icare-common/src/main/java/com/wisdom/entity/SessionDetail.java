@@ -10,6 +10,8 @@ import java.io.Serializable;
  */
 public class SessionDetail implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     /**
      * 用户编号
      */
@@ -45,6 +47,16 @@ public class SessionDetail implements Serializable {
      * 微信登陆缓存对象
      */
     private WeChatLogin weChatLogin;
+
+    /**
+     * 患者下拉列表
+     */
+    private String patientSelect;
+
+    /**
+     * 联系人下拉列表
+     */
+    private String linkSelect;
 
     public Integer getAccountId() {
         return accountId;
@@ -100,5 +112,21 @@ public class SessionDetail implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getPatientSelect() {
+        return patientSelect;
+    }
+
+    public void setPatientSelect(String patientSelect) {
+        this.patientSelect = patientSelect;
+    }
+
+    public String getLinkSelect() {
+        return linkSelect;
+    }
+
+    public void setLinkSelect(String linkSelect) {
+        this.linkSelect = linkSelect;
     }
 }
