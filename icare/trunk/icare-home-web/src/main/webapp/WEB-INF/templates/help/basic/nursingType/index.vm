@@ -61,13 +61,13 @@
                             <tr>
                                 <td class="col-sm-2">护理名称<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name" />
+                                    <input class="form-control validate[required]" type="text" name="name" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="col-sm-2">描述<span class="star">*</span></td>
                                 <td class="col-sm-10">
-                                    <input class="form-control" type="text" name="description">
+                                    <input class="form-control validate[required]" type="text" name="description">
                                 </td>
                             </tr>
                         </table>
@@ -98,13 +98,13 @@
                             <tr>
                                 <td class="col-sm-2">护理名称<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name" />
+                                    <input class="form-control validate[required]" type="text" name="name" />
                                 </td>
                             </tr>
                             <tr>
                                 <td class="col-sm-2">描述<span class="star">*</span></td>
                                 <td class="col-sm-10">
-                                    <input class="form-control" type="text" name="description">
+                                    <input class="form-control validate[required]" type="text" name="description">
                                 </td>
                             </tr>
                         </table>
@@ -123,8 +123,18 @@
     $(function() {
         qryData('searchForm');
 
+        // 新增显示
+        $('#add').on('show.bs.modal', function (el) {
+            $('#addForm').validationEngine('hideAll');
+            $('#addForm')[0].reset();
+        });
+
         // 新增保存
         $('.btn-add').click(function() {
+            var flag = $('#addForm').validationEngine('validate');
+            if(!flag)
+                return;
+
             showMask();
 
             var url = base + '/nursingType/add';
@@ -185,6 +195,10 @@
 
         // 修改保存
         $('.btn-modify').click(function() {
+            var flag = $('#modifyForm').validationEngine('validate');
+            if(!flag)
+                return;
+
             showMask();
 
             var url = base + '/nursingType/modify';

@@ -73,7 +73,6 @@ public class UserController extends BaseController {
             Account account = new Account();
             account.setPhoneNo(userName);
             account.setPassword(password);
-            account.setType(SysParamDetailConstant.ACCOUNT_TYPE_PATIENT);
 
             account = accountService.login(account);
 

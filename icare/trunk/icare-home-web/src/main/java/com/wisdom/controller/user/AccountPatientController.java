@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
  * 患者管理
  * Created by fusj on 16/3/14.
  */
+@Deprecated
 @Controller
 @RequestMapping("accountPatient")
 public class AccountPatientController extends BaseController {

@@ -78,12 +78,12 @@
                             <tr>
                                 <td class="col-sm-2">区域名称<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name" />
+                                    <input class="form-control validate[required]" type="text" name="name" />
                                 </td>
 
                                 <td class="col-sm-2">区域编码<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="code" />
+                                    <input class="form-control validate[required]" type="text" name="code" />
                                 </td>
                             </tr>
                         </table>
@@ -114,12 +114,12 @@
                             <tr>
                                 <td class="col-sm-2">区域名称<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name" />
+                                    <input class="form-control validate[required]" type="text" name="name" />
                                 </td>
 
                                 <td class="col-sm-2">区域编码<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="code" />
+                                    <input class="form-control validate[required]" type="text" name="code" />
                                 </td>
                             </tr>
                         </table>
@@ -138,8 +138,18 @@
     $(function() {
         initTreeData(0);
 
+        // 新增显示
+        $('#add').on('show.bs.modal', function (el) {
+            $('#addForm').validationEngine('hideAll');
+            $('#addForm')[0].reset();
+        });
+
         // 新增保存
         $('.btn-add').click(function() {
+            var flag = $('#addForm').validationEngine('validate');
+            if(!flag)
+                return;
+
             showMask();
 
             var url = base + '/zone/add';
@@ -201,6 +211,10 @@
 
         // 修改保存
         $('.btn-modify').click(function() {
+            var flag = $('#modifyForm').validationEngine('validate');
+            if(!flag)
+                return;
+
             showMask();
 
             var url = base + '/zone/modify';

@@ -7,7 +7,7 @@
                 <a href="javascript:void(0);" class="last">系统管理</a>
                 &gt;
                 <a href="javascript:void(0)" class="last">参数配置</a>
-                <button class="reback" onclick="history.go(-1)"><i class="iconfont icon-left"></i>返回</button>
+                <button class="reback" onclick="goBack()"><i class="iconfont icon-left"></i>返回</button>
             </div>
             <!--search  area-->
 ##            <div class="searchArea">
@@ -55,11 +55,11 @@
                             <tr>
                                 <td class="col-sm-2">名称<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="pDesc">
+                                    <input class="form-control validate[required]" type="text" name="pDesc">
                                 </td>
                                 <td>值<span class="star">*</span></td>
                                 <td>
-                                    <input class="form-control" type="text" name="pValue">
+                                    <input class="form-control validate[required]" type="text" name="pValue">
                                 </td>
                             </tr>
                         </table>
@@ -91,11 +91,11 @@
                             <tr>
                                 <td class="col-sm-2">名称<span class="star">*</span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="pDesc">
+                                    <input class="form-control validate[required]" type="text" name="pDesc">
                                 </td>
                                 <td>值<span class="star">*</span></td>
                                 <td>
-                                    <input class="form-control" type="text" name="pValue">
+                                    <input class="form-control validate[required]" type="text" name="pValue">
                                 </td>
                             </tr>
                         </table>
@@ -114,8 +114,18 @@
     $(function() {
         qryData('searchForm');
 
+        // 新增显示
+        $('#add').on('show.bs.modal', function (el) {
+            $('#addForm').validationEngine('hideAll');
+            $('#addForm')[0].reset();
+        });
+
         // 新增保存
         $('.btn-add').click(function() {
+            var flag = $('#addForm').validationEngine('validate');
+            if(!flag)
+                return;
+
             showMask();
 
             var url = base + '/param/detailAdd';
@@ -144,6 +154,9 @@
 
         // 修改按钮加载数据
         $('#modify').on('show.bs.modal', function (el) {
+            $('#modifyForm').validationEngine('hideAll');
+            $('#modifyForm')[0].reset();
+
             var invoker = $(el.relatedTarget);
 
             var id = invoker.attr('id');
@@ -176,6 +189,10 @@
 
         // 修改保存
         $('.btn-modify').click(function() {
+            var flag = $('#modifyForm').validationEngine('validate');
+            if(!flag)
+                return;
+
             showMask();
 
             var url = base + '/param/detailModify';
@@ -201,4 +218,8 @@
             });
         });
     });
+
+    function goBack() {
+        load(base + '/param');
+    }
 </script>

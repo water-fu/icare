@@ -54,6 +54,8 @@
     });
 
     function menu_load(el) {
+        showMask();
+
         $('.main_nav').find('.active').removeClass('active');
 
         var _this = $(el);
@@ -64,7 +66,9 @@
         var id = _this.parents('div.sec_nav').attr('id');
         $('.nav').find('li.' + id).addClass('active');
 
-        $('.body').load(_this.attr('src'));
+        $('.body').load(_this.attr('src'), function() {
+            hideMask();
+        });
     }
 
     function load(url) {

@@ -145,7 +145,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">护士详细信息</h4>
+                <h4 class="modal-title" id="myModalLabel">患者认证信息</h4>
             </div>
             <div class="modal-body">
                 <div class="modal_wrap">
@@ -154,11 +154,21 @@
                         <!--info table-->
                         <table class="table table-bordered detailInfo">
                             <tr>
-                                <td class="col-sm-2">姓名<span class="star">*</span></td>
+                                <td class="col-sm-2">姓名<span class="star"></span></td>
                                 <td class="col-sm-4">
                                     <input class="form-control" type="text" name="name" />
                                 </td>
-                                <td class="col-sm-2">性别<span class="star">*</span></td>
+                                <td class="col-sm-2">身份证号码<span class="star"></span></td>
+                                <td class="col-sm-4">
+                                    <input class="form-control" type="text" name="idCode" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="col-sm-2">年龄<span class="star"></span></td>
+                                <td class="col-sm-4">
+                                    <input class="form-control" type="text" name="age" />
+                                </td>
+                                <td class="col-sm-2">性别<span class="star"></span></td>
                                 <td class="col-sm-4">
                                     <select name="sex" class="form-control">
                                         #foreach($param in $!{cache.getListByKey("SEX")})
@@ -168,19 +178,19 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-sm-2">年龄<span class="star">*</span></td>
+                                <td class="col-sm-2">手持身份证头部照<span class="star"></span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="age" />
+                                    <img class="idPath" src="" alt="" data-toggle="modal" data-target="#pic" style="cursor:pointer;" title="查看大图" >
                                 </td>
-                                <td class="col-sm-2">身份证号码<span class="star">*</span></td>
+                                <td class="col-sm-2">半身照<span class="star"></span></td>
                                 <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="idCode" />
+                                    <img class="bodyPath" src="" alt="" data-toggle="modal" data-target="#pic" style="cursor:pointer;" title="查看大图">
                                 </td>
                             </tr>
                             <tr>
-                                <td class="col-sm-2">身份证照片<span class="star">*</span></td>
-                                <td class="col-sm-4">
-                                    <img src="#" alt="">
+                                <td class="col-sm-2">审核意见<span class="star">*</span></td>
+                                <td class="col-sm-10" colspan="3">
+                                    <textarea rows="3" name="serviceExp" class="form-control validate[required]" placeholder="请填写审核意见..."></textarea>
                                 </td>
                             </tr>
                         </table>
@@ -188,11 +198,24 @@
                 </div>
             </div>
             <div class="modal-footer border">
-                <button type="button" class="btn btn-success btn-baocun btn-audit"><i class="iconfont icon-baocun"></i>审核通过</button>
+                <button type="button" class="btn btn-success btn-baocun btn-audit"><i class="iconfont icon-shenhe"></i>审核通过</button>
+                <button type="button" class="btn btn-warning btn-baocun btn-audit"><i class="iconfont icon-chexiao"></i>审核不通过</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="iconfont icon-cuowu"></i>取消</button>
             </div>
         </div>
     </div>
+</div>
+
+<!--相册功能-->
+<div class="modal fade pic" id="pic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <img src="" alt="" class="bigPicImg" />
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
 </div>
 
 <script type="text/javascript">
@@ -290,9 +313,14 @@
 
         // 患者信息按钮加载数据
         $('#detail').on('show.bs.modal', function (el) {
+            $('#detailForm').validationEngine('hideAll');
+            $('#detailForm')[0].reset();
+
+            showMask();
 
             $('#detailForm').find('input').attr('disabled', 'disabled');
-            $('#detailForm').find('.star').html('');
+            $('#detailForm').find('select').attr('disabled', 'disabled');
+//            $('#detailForm').find('.star').html('');
             $('#detailForm').find('img').css({'width': '150px', 'height': '80px'});
 
             var invoker = $(el.relatedTarget);
@@ -323,6 +351,9 @@
                             $('#detailForm').find('select[name="sex"]').find('option[value=' + data.sex + ']').attr('selected', 'selected');
                             $('#detailForm').find('input[name="age"]').val(data.age);
                             $('#detailForm').find('input[name="idCode"]').val(data.idCode);
+                            $('#detailForm').find('img[class="idPath"]').attr('src', data.idPath);
+                            $('#detailForm').find('img[class="bodyPath"]').attr('src', data.bodyPath);
+
                         } else {
 //                            $('#detailForm').find('input').removeAttr('disabled');
 //                            $('#detailForm').find('.star').html('*');
@@ -336,5 +367,26 @@
                 }
             });
         });
+
+        $('#pic').on('show.bs.modal', function (el) {
+            var invoker = $(el.relatedTarget);
+            var src = invoker.attr('src');
+
+            if(!src) {
+                return;
+            }
+            $('#pic').find('.bigPicImg').attr('src', src);
+
+        });
+
+        // 审核
+        $('.btn-audit').click(function() {
+            var flag = $('#detailForm').validationEngine('validate');
+            if(!flag)
+                return;
+
+
+        });
+
     });
 </script>
