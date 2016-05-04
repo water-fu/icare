@@ -8,8 +8,8 @@ import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.controller.common.BaseController;
 import com.wisdom.entity.ResultBean;
 import com.wisdom.entity.SessionDetail;
-import com.wisdom.entity.ZoneSelect;
 import com.wisdom.service.IZoneCommonService;
+import com.wisdom.service.order.IOrderInfoService;
 import com.wisdom.util.CookieUtil;
 import com.wisdom.dao.entity.Recover;
 import com.wisdom.service.user.IRecoverService;
@@ -22,11 +22,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 康复师
@@ -55,6 +57,9 @@ public class RecoverController extends BaseController {
     @Autowired
     private SystemSetting systemSetting;
 
+    @Autowired
+    private IOrderInfoService orderInfoService;
+
     /**
      * 注册成功页面
      * @return
@@ -69,8 +74,15 @@ public class RecoverController extends BaseController {
      * @return
      */
     @RequestMapping(value = "index", method = RequestMethod.GET)
-    public String index() {
-        return String.format(VM_ROOT_PATH, "index");
+    public ModelAndView index(Model model, HttpServletRequest request) {
+        Cookie cookie = CookieUtil.getCookieByName(request, CommonConstant.COOKIE_VALUE);
+        SessionDetail sessionDetail = (SessionDetail) sessionCache.get(cookie.getValue());
+
+        // 统计新派订单、待评估订单、服务中订单数量
+        Map<String, Integer> statMap = orderInfoService.statOrderNum(sessionDetail);
+        model.addAttribute("stat", statMap);
+
+        return new ModelAndView("recover/order/home");
     }
 
     /**

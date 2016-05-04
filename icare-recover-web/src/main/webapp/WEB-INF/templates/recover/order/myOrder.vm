@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("sys_param.vm")
+
+    <meta charset="UTF-8">
+    <meta a name="viewport" content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+    <title>$!{TITLE}</title>
+
+    #parse("addon/css.vm")
+</head>
+<body class="user_index">
+<div class="container guide">
+    <div class="row">
+        <header class="tc">
+            <a href="javascript:goBack()" class="fl">&lt;</a>
+            <span>我的订单</span>
+        </header>
+        <div class="content order">
+            <ul id="myTab" class="nav nav-tabs">
+                <li class="active"><a href="#new" data-toggle="tab"><span><i class="point"></i>新派</span></a></li>
+                <li class="tips"><a href="#eva" data-toggle="tab"><span><i class="point"></i>评估</span></a></li>
+                <li><a href="#serv" data-toggle="tab"><span><i class="point"></i>服务中</span></a></li>
+                <li><a href="#ok" data-toggle="tab"><span class="b-n"><i class="point"></i>已完成</span></a></li>
+            </ul>
+            <div id="myTabContent" class="tab-content">
+                <div class="tab-pane fade in active" id="new" val="1">
+                </div>
+
+                <div class="tab-pane fade" id="eva" val="2">
+                </div>
+
+                <div class="tab-pane fade" id="serv" val="3">
+                </div>
+
+                <div class="tab-pane fadee" id="ok" val="4">
+                </div>
+            </div>
+        </div>
+        <div class="nav_bottom">
+            <ul>
+                <li>
+                    <a href="index.html">
+                        <i class="iconfont icon-shouye"></i>
+                        <p>首页</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="service.html">
+                        <i class="iconfont icon-yiliao"></i>
+                        <p>服务</p>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="order.html">
+                        <i class="iconfont icon-dingdan"></i>
+                        <p>订单</p>
+                    </a>
+                </li>
+                <li>
+                    <a href="mye.html">
+                        <i class="iconfont icon-wode"></i>
+                        <p>我的</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</body>
+</html>
+#parse("addon/javascript.vm")
+<script type="text/javascript">
+    $(function() {
+        // 加载数据
+        var div = $('div#new');
+        div.empty();
+        var loading = $('<p style="text-align: center; margin: 10px 0 0 0;color: #666;" class="loading">正在刷新中...</p>');
+        div.append(loading);
+        div.load(base + '/order/orderList?orderStatus=' + div.attr('val'), function() {
+            div.find('.loading').fadeOut('slow');
+        });
+    });
+
+    function goBack() {
+        location.href = base + '/recover/index#';
+    }
+
+    $('a[data-toggle="tab"]').on('show.bs.tab', function (e) {
+        var el = $(e.target);
+        var id = el.attr('href').substr(1);
+
+        var div = $('div#' + id);
+        if(div.children('div.orderlist').length > 0) {
+            return;
+        }
+
+        div.empty();
+        var loading = $('<p style="text-align: center; margin: 10px 0 0 0;color: #666;" class="loading">正在刷新中...</p>');
+        div.append(loading);
+
+        // 加载数据
+        div.load(base + '/order/orderList?orderStatus=' + div.attr('val'), function() {
+            div.find('.loading').fadeOut('slow');
+        });
+    });
+</script>

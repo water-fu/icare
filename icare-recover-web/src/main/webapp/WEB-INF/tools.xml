@@ -10,4 +10,16 @@
         <scope>application</scope>
         <class>com.wisdom.controller.common.toolbox.SysParamTools</class>
     </tool>
+
+    <tool>
+        <key>sessionDetail</key>
+        <scope>application</scope>
+        <class>com.wisdom.controller.common.toolbox.SessionDetailTools</class>
+    </tool>
+
+    <tool>
+        <key>zone</key>
+        <scope>application</scope>
+        <class>com.wisdom.controller.common.toolbox.ZoneTools</class>
+    </tool>
 </toolbox>

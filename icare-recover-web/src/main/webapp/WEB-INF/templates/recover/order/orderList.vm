@@ -1,0 +1,28 @@
+#parse("sys_param.vm")
+
+#if($!{result.size()} == 0)
+    <p style="text-align: center; margin: 10px 0 0 0;color: grey;">列表数据为空</p>
+#end
+
+#foreach($row in $!{result})
+    <div href="$!{CONTEXT_PATH}/order/orderDetail?id=$!{row.ID}" class="orderlist">
+        <p>
+            <img src="$!{CONTEXT_PATH}/static/img/photo.png" alt="" />
+            <span class="peo">$!{row.PATIENT_NAME}</span><span class="time">$!{date.format("MM.dd HH:mm", $!{row.OPER_DATE})}</span>
+            <span class="type fr">$!{cache.getDescByValue("RECOVER_TYPE", "$!{row.TYPE_ID}")}</span>
+        </p>
+        <p>
+            <span>$!{zone.getZoneByCode($!{row.CITY}).getName()}$!{zone.getZoneByCode($!{row.COUNTRY}).getName()}$!{row.ADDRESS}</span>
+        </p>
+        <p>
+            Tel:<span class="num"><a href="tel:$!{row.LINK_PHONE}">$!{row.LINK_PHONE}</a></span>
+        </p>
+    </div>
+#end
+<script type="text/javascript">
+    $(function() {
+        $('div.orderlist').click(function() {
+           location.href = $(this).attr('href');
+        });
+    });
+</script>

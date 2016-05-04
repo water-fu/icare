@@ -6,11 +6,13 @@ import com.wisdom.constants.CommonConstant;
 import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.controller.common.BaseController;
 import com.wisdom.dao.entity.Account;
+import com.wisdom.dao.entity.Recover;
 import com.wisdom.entity.ResultBean;
 import com.wisdom.entity.SessionDetail;
 import com.wisdom.exception.ApplicationException;
 import com.wisdom.service.IIdentifyCodeService;
 import com.wisdom.service.user.IAccountService;
+import com.wisdom.service.user.IRecoverService;
 import com.wisdom.util.CookieUtil;
 import com.wisdom.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
@@ -51,6 +53,9 @@ public class UserController extends BaseController {
 
     @Autowired
     private IAccountService accountService;
+
+    @Autowired
+    private IRecoverService recoverService;
 
     /**
      * 注册页面
@@ -192,6 +197,16 @@ public class UserController extends BaseController {
                 sessionDetail.setType(account.getType());
                 sessionDetail.setStatus(account.getStatus());
                 sessionDetail.setFrom(SysParamDetailConstant.LOGIN_FROM_SYSTEM);
+
+                // 获取用户名
+                Recover recover = recoverService.findRecoverByAccountId(account.getId());
+                if(null != recover && StringUtil.isNotEmptyObject(recover.getName())) {
+                    sessionDetail.setName(recover.getName());
+                } else if(StringUtil.isNotEmptyObject(account.getName())) {
+                    sessionDetail.setName(account.getName());
+                } else {
+                    sessionDetail.setName(account.getPhoneNo());
+                }
 
                 // 把redis的key存入cookie，有效期1天
                 Cookie cookie = CookieUtil.getCookieByName(request, CommonConstant.COOKIE_VALUE);
