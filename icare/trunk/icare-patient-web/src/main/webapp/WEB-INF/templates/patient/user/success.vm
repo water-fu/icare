@@ -42,7 +42,9 @@
 <script type="text/javascript">
 
     function ready() {
-        shareTimeLine('欢迎邀请E帮护', '$!{SERVER_PATH}/user/register', '');
+        shareTimeLine('欢迎注册E帮护', '$!{SERVER_PATH}/user/register?key=$!{key}', '');
+        shareAppMessage('欢迎注册E帮护', '$!{SERVER_PATH}/user/register?key=$!{key}', '', '欢迎使用E帮护');
+
     }
 
     wx_config(ready);

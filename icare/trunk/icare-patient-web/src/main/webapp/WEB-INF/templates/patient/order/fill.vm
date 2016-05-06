@@ -90,15 +90,6 @@
             </ul>
 
             <ul class="infoput clearfix">
-                <li class="clearfix">
-                    <label class="control-label col-xs-3">诊断证明：</label>
-                    <div class="col-xs-9 p-n">
-
-                    </div>
-                </li>
-            </ul>
-
-            <ul class="infoput clearfix">
                 <li class="clearfix b-b">
                     <label class="control-label col-xs-3">时间段1：</label>
                     <div class="col-xs-9 time">
@@ -159,6 +150,21 @@
                 </li>
             </ul>
 
+            <ul class="infoput clearfix">
+                <li class="clearfix">
+                    <label class="control-label col-xs-3">诊断证明：</label>
+                    <div class="col-xs-9 p-n">
+                        <div class="clearfix">
+                            <div class="col-xs-10 files" style="padding-bottom: 4px;">
+                            </div>
+                            <div class="col-xs-2 time">
+                                <a href="javascript:showPic()" style="right: 6px; background: #fff url($!{CONTEXT_PATH}/static/img/arrowadd.png) no-repeat"></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+
         </form>
         <div class="tc">
             <a href="javascript:void(0)" class="btn btn-login save">预约</a>
@@ -168,9 +174,27 @@
         </div>
     </div>
 </div>
+
+<!--相册功能-->
+<div class="modal fade pic" id="pic" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button class="mui-btn-nav" onclick="delPic()">删除</button>
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <img src="" alt="" class="bigPicImg" style="max-width: 90%; max-height: 90%;" />
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
+
 </body>
 </html>
 #parse("addon/javascript.vm")
+#parse("addon/wxutil.vm")
 
 <script src="$!{CONTEXT_PATH}/static/js/mui/2.9.0/mui.min.js" ></script>
 <script src="$!{CONTEXT_PATH}/static/js/mui/picker/mui.picker.min.js" ></script>
@@ -178,6 +202,8 @@
 
 <script type="text/javascript">
     $(function(){
+        wx_config();
+
         $('.radio>a').click(function(){
             if(!$(this).hasClass('checked')){
                 $(this).addClass('checked').siblings().removeClass('checked');
@@ -252,10 +278,29 @@
             return;
         }
 
-
-        $('.save').html('正在保存...');
+        // 上传照片
+        $('.save').html('正在上传图片...');
         $('.save').addClass('btn-gray');
         $('.save').unbind('click');
+
+        // 删除原有的input
+        $('input[name="serverId"]').remove();
+
+        var localIds = [];
+        var imgs = $('.files').find('img').each(function() {
+            localIds.push($(this).attr('localId'));
+        });
+
+        if(localIds.length > 0) {
+            syncUpload(localIds);
+        } else {
+            saveData();
+        }
+    }
+
+    // 保存数据
+    function saveData() {
+        $('.save').html('正在保存...');
 
         $.ajax({
             url: base + '/order/fill',
@@ -291,6 +336,63 @@
         location.href = base + '/order/fill?type=$!{request.getParameter('type')}';
     }
 
+    $('#pic').on('show.bs.modal', function (el) {
+        var invoker = $(el.relatedTarget);
+        var src = invoker.attr('src');
+
+        if(!src) {
+            return;
+        }
+        $('#pic').find('.bigPicImg').attr('src', src);
+
+    });
+
+    // 上传照片
+    function showPic() {
+        wx.chooseImage({
+            count: 1, // 默认9
+            sizeType: ['original', 'compressed'], // 可以指定是原图还是压缩图，默认二者都有
+            sourceType: ['album', 'camera'], // 可以指定来源是相册还是相机，默认二者都有
+            success: function (res) {
+                var localIds = res.localIds; // 返回选定照片的本地ID列表，localId可以作为img标签的src属性显示图片
+                // 显示图片
+                var img = $('<img style="width:70px; height: 40px; margin-top: 4px; margin-right: 2px;" data-toggle="modal" data-target="#pic" >');
+                img.attr('src', localIds);
+                img.attr('localId', localIds);
+
+                $('.files').append(img);
+            }
+        });
+    }
+
+    // 删除债片
+    function delPic() {
+        $('#pic').modal('hide');
+        var src = $('.bigPicImg').attr('src');
+        $('.files').find('img[src="' + src + '"]').remove();
+    }
+
+    // 上传微信服务器
+    var syncUpload = function(localIds) {
+        var localId = localIds.pop();
+
+        uploadImage(localId, function (res) {
+            var serverId = res;
+
+            var input = $('<input type="hidden" name="serverId" class="inputServer">');
+            input.val(serverId);
+
+            $('#orderForm').append(input);
+
+            if(localIds.length > 0) {
+                syncUpload(localIds);
+            } else {
+                saveData();
+            }
+        });
+    };
+
+    // MIUI
     (function($$, doc) {
         $$.init();
 

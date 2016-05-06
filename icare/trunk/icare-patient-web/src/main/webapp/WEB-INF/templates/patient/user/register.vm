@@ -20,6 +20,7 @@
         </div>
         <div class="loginbox regis">
             <form id="registerForm">
+                <input type="hidden" name="key" value="$!{request.getParameter("key")}" >
                 <ul>
                     <li>
                         <label>手机号:</label>

@@ -67,12 +67,13 @@ public class UserController extends BaseController {
      * 注册
      * @param account
      * @param code
+     * @param key      注册推荐KEY
      * @return
      */
     @RequestMapping(value = "register", method = RequestMethod.POST)
     @ResponseBody
     @Check(loginCheck = false)
-    public ResultBean register(Account account, String code, HttpServletRequest request, HttpServletResponse response) {
+    public ResultBean register(Account account, String code, @RequestParam(value = "key", required = false) String key, HttpServletRequest request, HttpServletResponse response) {
         try {
 
             // 校验验证码是否正确
@@ -84,7 +85,7 @@ public class UserController extends BaseController {
             account.setType(SysParamDetailConstant.ACCOUNT_TYPE_PATIENT);
 
             // 保存account表
-            account = accountService.register(account);
+            account = accountService.register(account, key);
 
             // session缓存失败，不影响用户注册
             try {

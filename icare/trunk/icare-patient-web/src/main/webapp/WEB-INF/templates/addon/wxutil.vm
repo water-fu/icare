@@ -88,12 +88,59 @@
         });
     }
 
+    // 分享到朋友
+    function shareAppMessage(title, link, imgUrl, desc, type, dataUrl, trigger, success, cancel, fail) {
+        title = title || '';
+        link = link || '';
+        imgUrl = imgUrl || '';
+        desc = desc || '';
+        type = type || 'link';
+        dataUrl = dataUrl || '';
+
+        wx.onMenuShareAppMessage({
+            title: title, // 分享标题
+            desc: desc, // 分享描述
+            link: link, // 分享链接
+            imgUrl: imgUrl, // 分享图标
+            type: type, // 分享类型,music、video或link，不填默认为link
+            dataUrl: dataUrl, // 如果type是music或video，则要提供数据链接，默认为空
+            trigger: function (res) {
+                if(trigger) {
+                    trigger(res);
+                }
+            },
+            success: function (res) {
+                if(success) {
+                    success(res);
+                }
+            },
+            cancel: function (res) {
+                // 用户取消分享后执行的回调函数
+                if(cancel) {
+                    cancel(res);
+                }
+            },
+            fail: function (res) {
+                if(fail) {
+                    fail(res);
+                } else {
+                    alert('分享失败，请稍后再试');
+                }
+            }
+        });
+    }
+
+    // 分享QQ
+
+    // 分享到微博
+
+    // 分享到QQ空间
+
     function uploadImage(localId, success) {
         wx.uploadImage({
             localId: localId, // 需要上传的图片的本地ID，由chooseImage接口获得
             isShowProgressTips: 1, // 默认为1，显示进度提示
             success: function (res) {
-                alert(res.serverId);
                 var serverId = res.serverId; // 返回图片的服务器端ID
 
                 if(success) {

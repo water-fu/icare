@@ -9,6 +9,7 @@ import com.wisdom.dao.entity.OrderInfo;
 import com.wisdom.entity.OrderDateList;
 import com.wisdom.entity.ResultBean;
 import com.wisdom.entity.SessionDetail;
+import com.wisdom.service.IMediaService;
 import com.wisdom.service.order.IOrderInfoService;
 import com.wisdom.util.CookieUtil;
 import com.wisdom.util.JackonUtil;
@@ -19,6 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.Cookie;
@@ -42,6 +44,9 @@ public class OrderInfoController extends BaseController {
 
     @Autowired
     private SessionCache sessionCache;
+
+    @Autowired
+    private IMediaService mediaDownload;
 
     /**
      * 订单指导页面
@@ -73,6 +78,7 @@ public class OrderInfoController extends BaseController {
                            String startDate1, String endDate1,
                            String startDate2, String endDate2,
                            String startDate3, String endDate3,
+                           @RequestParam(value = "serverId", required = false) String[] serverId,
                            HttpServletRequest request) {
         try {
 
@@ -104,10 +110,18 @@ public class OrderInfoController extends BaseController {
                 list.add(orderDate3);
             }
 
+            // 从微信服务器下载图片
+            List<byte[]> fileList = new ArrayList<>();
+            for(String sId : serverId) {
+                byte[] file = mediaDownload.getMediaFile(sId);
+
+                fileList.add(file);
+            }
+
             OrderDateList orderDateList = new OrderDateList();
             orderDateList.setList(list);
 
-            orderInfoService.fill(orderInfo, orderBooking, cityKey, orderDateList, sessionDetail);
+            orderInfoService.fill(orderInfo, orderBooking, cityKey, orderDateList, fileList, sessionDetail);
 
             return resultBean;
 
