@@ -151,4 +151,6 @@ public class SysParamDetailConstant {
     public static final String AUDIT_SUCCESS = "1"; // 审核通过
 
     public static final String AUDIT_FAILE= "0"; // 审核不通过
+
+    public static final String AUDIT_SUBMIT = "-1"; // 提交审核
 }
