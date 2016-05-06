@@ -2,11 +2,10 @@ package com.wisdom.service.user.impl;
 
 import com.wisdom.constants.CommonConstant;
 import com.wisdom.constants.SysParamDetailConstant;
-import com.wisdom.dao.entity.Account;
-import com.wisdom.dao.entity.AccountExample;
-import com.wisdom.dao.entity.WeChatLogin;
-import com.wisdom.dao.entity.WeChatLoginExample;
+import com.wisdom.dao.entity.*;
 import com.wisdom.dao.mapper.AccountMapper;
+import com.wisdom.dao.mapper.LinkInfoMapper;
+import com.wisdom.dao.mapper.PatientMapper;
 import com.wisdom.dao.mapper.WeChatLoginMapper;
 import com.wisdom.encrypt.EncryptFactory;
 import com.wisdom.entity.PageInfo;
@@ -14,12 +13,15 @@ import com.wisdom.entity.SessionDetail;
 import com.wisdom.exception.ApplicationException;
 import com.wisdom.service.user.IAccountService;
 import com.wisdom.util.DateUtil;
+import com.wisdom.util.JackonUtil;
+import com.wisdom.util.Pinyin4jUtil;
 import com.wisdom.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,6 +38,12 @@ public class AccountServiceImpl implements IAccountService {
 
     @Autowired
     private WeChatLoginMapper weChatLoginMapper;
+
+    @Autowired
+    private PatientMapper patientMapper;
+
+    @Autowired
+    private LinkInfoMapper linkInfoMapper;
 
     /**
      * 列表数据
@@ -156,7 +164,7 @@ public class AccountServiceImpl implements IAccountService {
      * @return
      */
     @Override
-    public Account register(Account account) {
+    public Account register(Account account, String key) {
         AccountExample example = new AccountExample();
         example.createCriteria().andPhoneNoEqualTo(account.getPhoneNo());
 
@@ -184,6 +192,41 @@ public class AccountServiceImpl implements IAccountService {
         account.setPoint("0");
         account.setIsDel(SysParamDetailConstant.IS_DEL_FALSE);
         account.setCreateTime(DateUtil.getTimestamp());
+
+        // 判断和解析推荐人
+        if(SysParamDetailConstant.IS_REWARD_TRUE.equals(account.getIsReward()) && StringUtil.isNotEmptyObject(key)) {
+            // 奖励人列表
+            List<String> rewardList = new ArrayList<>();
+
+            // 一级推荐人
+            String parentId = EncryptFactory.getInstance(SysParamDetailConstant.AES).decodePassword(key, CommonConstant.SALT);
+            int parentAccountId = Integer.parseInt(parentId);
+            account.setParentId(parentAccountId);
+
+            rewardList.add(parentId);
+
+            Account parentAccount = accountMapper.selectByPrimaryKey(parentAccountId);
+            if(StringUtil.isNotEmptyObject(parentAccount.getParentId())) {
+                // 二级推荐人
+                int ppAccountId = parentAccount.getParentId();
+                Account ppAccount = accountMapper.selectByPrimaryKey(ppAccountId);
+
+                rewardList.add(0, ppAccountId + "");
+
+                // 三级推荐人
+                if(StringUtil.isNotEmptyObject(ppAccount.getParentId())) {
+                    int pppAccountId = ppAccount.getParentId();
+
+                    rewardList.add(0, pppAccountId + "");
+                }
+            }
+
+            try {
+                account.setRewardId(JackonUtil.writeEntity2JSON(rewardList));
+            } catch (Exception ex) {
+                throw new ApplicationException("设置推荐人异常");
+            }
+        }
 
         accountMapper.insertSelective(account);
 
@@ -316,6 +359,30 @@ public class AccountServiceImpl implements IAccountService {
 
                     weChatLogin.setAccountId(account.getId());
                     weChatLoginMapper.updateByPrimaryKeySelective(weChatLogin);
+
+                    // 插入patient表，自己是患者的记录
+                    Patient patient = new Patient();
+                    patient.setAccountId(account.getId());
+                    patient.setName(weChatLogin.getNickName());
+                    patient.setSimplePinyin(Pinyin4jUtil.translate(weChatLogin.getNickName(), Pinyin4jUtil.RET_PINYIN_TYPE_HEADCHAR));
+                    patient.setSex(weChatLogin.getSex());
+                    patient.setRelation(SysParamDetailConstant.RELATION_MYSELF);
+
+                    patient.setIsDel(SysParamDetailConstant.IS_DEL_FALSE);
+                    patient.setCreateDate(DateUtil.getTimestamp());
+
+                    patientMapper.insertSelective(patient);
+
+                    // 插入联系人表
+                    LinkInfo linkInfo = new LinkInfo();
+                    linkInfo.setAccountId(account.getId());
+                    linkInfo.setLinkName(weChatLogin.getNickName());
+                    linkInfo.setLinkPhone(weChatLogin.getNickName());
+                    linkInfo.setIsDel(SysParamDetailConstant.IS_DEL_FALSE);
+                    linkInfo.setCreateDate(DateUtil.getTimestamp());
+                    linkInfo.setCreateId(account.getId());
+
+                    linkInfoMapper.insertSelective(linkInfo);
 
                     return account;
             }

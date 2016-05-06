@@ -4,8 +4,10 @@ import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.dao.entity.Account;
 import com.wisdom.dao.entity.Patient;
 import com.wisdom.dao.entity.PatientExample;
+import com.wisdom.dao.entity.SysParam;
 import com.wisdom.dao.mapper.AccountMapper;
 import com.wisdom.dao.mapper.PatientMapper;
+import com.wisdom.entity.AuditList;
 import com.wisdom.entity.Select;
 import com.wisdom.entity.SessionDetail;
 import com.wisdom.exception.ApplicationException;
@@ -14,6 +16,7 @@ import com.wisdom.service.user.IPatientService;
 import com.wisdom.util.DateUtil;
 import com.wisdom.util.JackonUtil;
 import com.wisdom.util.Pinyin4jUtil;
+import com.wisdom.util.StringUtil;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -147,38 +150,65 @@ public class PatientServiceImpl implements IPatientService {
      * @param sessionDetail
      */
     private void insertIdentification(Patient patient, String headFileId, String bodyFileId, SessionDetail sessionDetail) {
-        patient.setAccountId(sessionDetail.getAccountId());
-        patient.setSimplePinyin(Pinyin4jUtil.translate(patient.getName(), Pinyin4jUtil.RET_PINYIN_TYPE_HEADCHAR));
-        patient.setIdPath(headFileId);
-        patient.setBodyPath(bodyFileId);
-        patient.setRelation(SysParamDetailConstant.RELATION_MYSELF); // 关系为自己
-        patient.setIsDel(SysParamDetailConstant.IS_DEL_FALSE);
-        patient.setCreateDate(DateUtil.getTimestamp());
-        patient.setStatus(SysParamDetailConstant.PATIENT_STATUS_ADD); // 新增
-
-        // 判断是否已经存在
         PatientExample example = new PatientExample();
         example.createCriteria().andAccountIdEqualTo(sessionDetail.getAccountId())
-                .andRelationEqualTo(SysParamDetailConstant.RELATION_MYSELF);
+                .andRelationEqualTo(SysParamDetailConstant.RELATION_MYSELF)
+                .andIsDelEqualTo(SysParamDetailConstant.IS_DEL_FALSE);
 
         List<Patient> list = patientMapper.selectByExample(example);
 
-        if(CollectionUtils.isEmpty(list)) {
-            patientMapper.insertSelective(patient);
-        } else {
-            patient.setId(list.get(0).getId());
+        // 保存对象
+        Patient patientData = new Patient();
+
+        if(CollectionUtils.isNotEmpty(list)) {
+            patientData = list.get(0);
 
             patient.setUpdateDate(DateUtil.getTimestamp());
             patient.setUpdateUser(sessionDetail.getAccountId());
+        } else {
+            patientData.setRelation(SysParamDetailConstant.RELATION_MYSELF); // 关系为自己
+            patientData.setIsDel(SysParamDetailConstant.IS_DEL_FALSE);
+            patientData.setCreateDate(DateUtil.getTimestamp());
+            patientData.setStatus(SysParamDetailConstant.PATIENT_STATUS_ADD); // 新增
+        }
 
+        patientData.setAccountId(sessionDetail.getAccountId());
+        patientData.setSimplePinyin(Pinyin4jUtil.translate(patient.getName(), Pinyin4jUtil.RET_PINYIN_TYPE_HEADCHAR));
+        patientData.setIdPath(headFileId);
+        patientData.setBodyPath(bodyFileId);
+
+        // 新增or更新
+        if(CollectionUtils.isEmpty(list)) {
+            patientMapper.insertSelective(patientData);
+        } else {
             patientMapper.updateByPrimaryKeySelective(patient);
         }
 
-
-        // 账户设置为认证确认
-        Account account = new Account();
+        // 账户设置为提交认证
+        Account account = accountMapper.selectByPrimaryKey(sessionDetail.getAccountId());
         account.setId(sessionDetail.getAccountId());
         account.setStatus(SysParamDetailConstant.ACCOUNT_STATUS_AUTHEN);
+
+        // 设置账号认证状态
+        try {
+            AuditList auditList = new AuditList();
+            if(StringUtil.isNotEmptyObject(account.getAuditDesc())) {
+                auditList = JackonUtil.readJson2Entity(account.getAuditDesc(), AuditList.class);
+            }
+
+            AuditList.AuditInfo auditInfo = new AuditList.AuditInfo();
+            auditInfo.setAuditType(SysParamDetailConstant.AUDIT_SUBMIT);
+            auditInfo.setAuditMsg("提交审核");
+            auditInfo.setAccountId(sessionDetail.getAccountId() + "");
+            auditInfo.setAuditDate(DateUtil.getTimestamp());
+
+            auditList.getList().add(auditInfo);
+
+            account.setAuditDesc(JackonUtil.writeEntity2JSON(auditList));
+
+        } catch (Exception ex) {
+            throw new ApplicationException("提交审批失败", ex);
+        }
 
         accountMapper.updateByPrimaryKeySelective(account);
     }
