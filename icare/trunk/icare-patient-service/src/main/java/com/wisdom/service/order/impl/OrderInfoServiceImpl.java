@@ -4,22 +4,27 @@ import com.google.common.util.concurrent.AtomicDouble;
 import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.dao.entity.OrderBooking;
 import com.wisdom.dao.entity.OrderInfo;
+import com.wisdom.dao.entity.RecoverPhoto;
 import com.wisdom.dao.mapper.OrderBookingMapper;
 import com.wisdom.dao.mapper.OrderInfoMapper;
 import com.wisdom.entity.OrderDateList;
 import com.wisdom.entity.SessionDetail;
 import com.wisdom.exception.ApplicationException;
+import com.wisdom.service.IFileService;
 import com.wisdom.service.order.IOrderInfoService;
 import com.wisdom.util.DateUtil;
 import com.wisdom.util.JackonUtil;
 import com.wisdom.util.StringUtil;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 订单信息
@@ -37,16 +42,33 @@ public class OrderInfoServiceImpl implements IOrderInfoService {
     @Autowired
     private OrderBookingMapper orderBookingMapper;
 
+    @Autowired
+    private IFileService fileService;
+
     /**
      * 订单预约
      * @param orderInfo
      * @param orderBooking
      * @param cityKey
+     * @param fileList
      * @param sessionDetail
      */
     @Override
     public void fill(OrderInfo orderInfo, OrderBooking orderBooking, String cityKey,
-                     OrderDateList orderDateList, SessionDetail sessionDetail) {
+                     OrderDateList orderDateList, List<byte[]> fileList, SessionDetail sessionDetail) {
+        // 上传照片
+        List<String> fileIds = new ArrayList<>();
+        if(CollectionUtils.isNotEmpty(fileList)) {
+            for(byte[] file : fileList) {
+                try {
+                    String fileId = fileService.uploadFile(fileService.getServerConfig(), file, "jpg", sessionDetail.getAccountId() + "_" + System.currentTimeMillis() + "_" + Math.random(), sessionDetail.getAccountId(), false, true);
+                    fileIds.add(fileId);
+                } catch (Exception ex) {
+                    throw new ApplicationException("诊断证明上传失败", ex);
+                }
+            }
+        }
+
         // 默认预约订单
         orderInfo.setOrderType(SysParamDetailConstant.ORDER_TYPE_BOOKING);
 
@@ -87,6 +109,13 @@ public class OrderInfoServiceImpl implements IOrderInfoService {
         orderBooking.setIsDel(SysParamDetailConstant.IS_DEL_FALSE);
         orderBooking.setCreateUser(sessionDetail.getAccountId());
         orderBooking.setCreateDate(DateUtil.getTimestamp());
+
+        // 把文件转换成JSON格式
+        try {
+            orderBooking.setDiagnosisFile(JackonUtil.writeEntity2JSON(fileIds));
+        } catch (Exception ex) {
+            throw new ApplicationException("系统异常", ex);
+        }
 
         orderBookingMapper.insertSelective(orderBooking);
 

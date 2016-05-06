@@ -63,7 +63,7 @@ public interface IAccountService {
      * @param account
      * @return
      */
-    Account register(Account account);
+    Account register(Account account, String key);
 
     /**
      * 系统登陆

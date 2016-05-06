@@ -17,8 +17,9 @@ public interface IOrderInfoService {
      * @param orderInfo
      * @param orderBooking
      * @param cityKey
+     * @param fileList
      * @param sessionDetail
      */
     void fill(OrderInfo orderInfo, OrderBooking orderBooking, String cityKey,
-              OrderDateList orderDateList, SessionDetail sessionDetail);
+              OrderDateList orderDateList, List<byte[]> fileList, SessionDetail sessionDetail);
 }
