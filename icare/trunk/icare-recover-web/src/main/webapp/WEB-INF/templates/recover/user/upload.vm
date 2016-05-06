@@ -205,10 +205,9 @@
         var localId = localIds.pop();
         var lid = lids.pop();
 
-        alert(localId);
         uploadImage(localId, function (res) {
 
-            var serverId = res.serverId;
+            var serverId = res;
 
             var input = $('<input type="hidden" name="serverId" class="inputServer">')
             input.attr('lid', lid);
@@ -216,10 +215,7 @@
 
             $('#uploadForm').append(input);
 
-            alert(1);
-            alert(localIds.length);
             if(localIds.length > 0) {
-                alert(2);
                 syncUpload(localIds, lids);
             } else {
                 save();
