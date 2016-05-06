@@ -85,7 +85,8 @@ public class WeChatLoginController extends BaseController {
             String url = LoginUrlConstants.WE_CHAT_MIDDLE_URL.replace("APPID", weChatSetting.getAppId())
                     .replace("REDIRECT_URI", URLEncoder.encode(sb.toString(), ENCODE))
                     .replace("SCOPE", SCOPE_SNSAPI_USERINFO)
-                    .replace("STATE", STATE);
+                    .replace("STATE", STATE)
+                    .replace("MIDDLE_URL", weChatSetting.getWeChatUrl());
 
             logger.info("回调地址:" + sb.toString());
             logger.info("微信登陆地址:" + url);
@@ -166,9 +167,14 @@ public class WeChatLoginController extends BaseController {
                 logger.error("缓存redis异常:" + ex.getMessage(), ex);
             }
 
-//            return new ModelAndView("redirect:/patient/success");
+            // 未绑定跳转到绑定页面，已经绑定的则跳转到首页
+            if(null != account && StringUtil.isNotEmptyObject(account.getPhoneNo())) {
+                return new ModelAndView("redirect:/patient/index");
+            }
+
             return new ModelAndView("redirect:/user/bind");
 
+//            return new ModelAndView("redirect:/patient/success");
         } catch (Exception ex) {
             logger.error(ex.getMessage(), ex);
 

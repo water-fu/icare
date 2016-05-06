@@ -3,8 +3,10 @@ package com.wisdom.controller.patient.user;
 import com.wisdom.annotation.Check;
 import com.wisdom.cache.SessionCache;
 import com.wisdom.constants.CommonConstant;
+import com.wisdom.constants.SysParamDetailConstant;
 import com.wisdom.controller.common.BaseController;
 import com.wisdom.dao.entity.Patient;
+import com.wisdom.encrypt.EncryptFactory;
 import com.wisdom.entity.ResultBean;
 import com.wisdom.entity.SessionDetail;
 import com.wisdom.service.IMediaService;
@@ -14,9 +16,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -47,8 +51,15 @@ public class PatientController extends BaseController {
      * @return
      */
     @RequestMapping(value = "success", method = RequestMethod.GET)
-    public String success() {
-        return String.format(VM_ROOT_PATH, "success");
+    public ModelAndView success(Model model, HttpServletRequest request) {
+        Cookie cookie = CookieUtil.getCookieByName(request, CommonConstant.COOKIE_VALUE);
+        SessionDetail sessionDetail = (SessionDetail) sessionCache.get(cookie.getValue());
+
+        // 推荐KEY
+        String key = EncryptFactory.getInstance(SysParamDetailConstant.AES).encodePassword(sessionDetail.getAccountId()+"", CommonConstant.SALT);
+        model.addAttribute("key", key);
+
+        return new ModelAndView(String.format(VM_ROOT_PATH, "success"));
     }
 
     /**
