@@ -22,6 +22,12 @@ public class WeChatSetting {
     @Value("#{propertiesReader['wechat.sceneStr']}")
     private String sceneStr;
 
+    /**
+     * 访问微信服务器的URL
+     */
+    @Value("#{propertiesReader['wechat.weChatUrl']}")
+    private String weChatUrl;
+
     public String getAppId() {
         return appId;
     }
@@ -52,5 +58,13 @@ public class WeChatSetting {
 
     public void setSceneStr(String sceneStr) {
         this.sceneStr = sceneStr;
+    }
+
+    public String getWeChatUrl() {
+        return weChatUrl;
+    }
+
+    public void setWeChatUrl(String weChatUrl) {
+        this.weChatUrl = weChatUrl;
     }
 }

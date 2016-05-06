@@ -34,6 +34,7 @@ public class MessageTextAction extends BaseAction<REQ_MessageText> {
 
 
         if("创建菜单".equals(content)) {
+            logger.debug(WeChatUtil.initMenu());
             int code = menuService.createMenu(WeChatUtil.initMenu());
             if(code == 0) {
                 message = ResponseUtil.initText(fromUserName, toUserName, "菜单创建成功");

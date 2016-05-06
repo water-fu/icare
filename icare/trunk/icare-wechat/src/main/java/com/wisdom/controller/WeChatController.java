@@ -126,6 +126,10 @@ public class WeChatController {
             // 需要获取接口权限
             List<String> jsApiList = new ArrayList<>();
             jsApiList.add("onMenuShareTimeline");
+            jsApiList.add("onMenuShareAppMessage");
+            jsApiList.add("onMenuShareQQ");
+            jsApiList.add("onMenuShareWeibo");
+            jsApiList.add("onMenuShareQZone");
             jsApiList.add("hideOptionMenu");
             jsApiList.add("showMenuItems");
             jsApiList.add("chooseImage");
