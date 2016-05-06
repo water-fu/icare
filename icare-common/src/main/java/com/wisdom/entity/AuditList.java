@@ -31,6 +31,7 @@ public class AuditList {
 
         /**
          * 审核类型
+         *  -1: 提交审批
          *  1: 同意
          *  0: 拒绝
          */
