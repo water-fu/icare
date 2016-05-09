@@ -22,6 +22,7 @@
             <li class="system" data-target="#system"><a href="javascript:void(0)"><i class="iconfont icon-weizhi"></i>系统管理</a></li>
             <li class="basic" data-target="#basic"><a href="javascript:void(0)"><i class="iconfont icon-jichutaizhangguanli"></i>基础数据</a></li>
             <li class="account" data-target="#account"><a href="javascript:void(0)"><i class="iconfont icon-idcard"></i>用户管理</a></li>
+            <li class="order" data-target="#order"><a href="javascript:void(0)"><i class="iconfont icon-idcard"></i>订单管理</a></li>
         </ul>
 
         <div class="sec_nav" id="system">
@@ -43,6 +44,11 @@
             <ul>
                 <li><a href="javascript:void(0)" onclick="menu_load(this)" src="$!{CONTEXT_PATH}/accountPatient">患者管理</a></li>
                 <li><a href="javascript:void(0)" onclick="menu_load(this)" src="$!{CONTEXT_PATH}/nursing">护士管理</a></li>
+            </ul>
+        </div>
+        <div class="sec_nav" id="order">
+            <ul>
+                <li><a href="javascript:void(0)" onclick="menu_load(this)" src="$!{CONTEXT_PATH}/order">订单信息</a></li>
             </ul>
         </div>
     </div>

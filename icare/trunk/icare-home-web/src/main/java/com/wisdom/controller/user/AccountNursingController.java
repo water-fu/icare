@@ -21,7 +21,6 @@ import org.springframework.web.servlet.ModelAndView;
  * 护士管理
  * Created by fusj on 16/3/14.
  */
-@Deprecated
 @Controller
 @RequestMapping("nursing")
 public class AccountNursingController extends BaseController {
