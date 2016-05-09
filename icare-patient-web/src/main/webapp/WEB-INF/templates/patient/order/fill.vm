@@ -78,7 +78,7 @@
                     </div>
                 </li>
                 <li class="clearfix">
-                    <label class="control-label col-xs-3">患者关系：</label>
+                    <label class="control-label col-xs-3">于患者关系：</label>
                     <div class="col-xs-9 p-n">
                         <select class="form-control" name="linkRelation">
                             <option value="1">本人</option>
