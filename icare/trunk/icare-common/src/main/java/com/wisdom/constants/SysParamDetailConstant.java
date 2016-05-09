@@ -136,7 +136,7 @@ public class SysParamDetailConstant {
 
     public static final String ORDER_STATUS_SUMMARY = "13"; // 订单已总结
 
-    public static final String ORDER_STATUS_OVER = "14"; // 订单已结束
+    public static final String ORDER_STATUS_OVER = "20"; // 订单已结束
 
     /**
      * 是否已经打印
