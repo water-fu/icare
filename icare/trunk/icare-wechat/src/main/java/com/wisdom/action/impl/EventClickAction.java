@@ -1,6 +1,8 @@
 package com.wisdom.action.impl;
 
 import com.wisdom.action.BaseAction;
+import com.wisdom.constant.ButtonKeyConstants;
+import com.wisdom.constant.ButtonTypeConstant;
 import com.wisdom.constant.EventTypeConstants;
 import com.wisdom.constant.MessageTypeConstant;
 import com.wisdom.model.req.REQ_EventClick;
@@ -20,9 +22,13 @@ public class EventClickAction extends BaseAction<REQ_EventClick> {
 
     @Override
     protected String doAction(REQ_EventClick request) throws Exception {
-        String content = "该功能正在开发中,请稍后";
-        String message = ResponseUtil.initText(request.getFromUserName(), request.getToUserName(), content);
+        if(ButtonKeyConstants.V001_BUTTON_BOOKING.equals(request.getEventKey())) {
+            String content = "请您致电400-158-1616或者访问我们的网站http://www.ebanghu.com，我们将竭诚为您服务！";
+            String message = ResponseUtil.initText(request.getFromUserName(), request.getToUserName(), content);
 
-        return message;
+            return message;
+        }
+
+        return "";
     }
 }
