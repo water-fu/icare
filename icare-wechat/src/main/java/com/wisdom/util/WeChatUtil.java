@@ -39,27 +39,32 @@ public class WeChatUtil {
 		Menu menu = new Menu();
 
 		// 菜单一
-//		ClickButton button1 = new ClickButton();
-//		button1.setName("康复预约");
-//		button1.setType(ButtonTypeConstant.BUTTON_CLICK);
-//		button1.setKey(ButtonKeyConstants.V001_BUTTON_BOOKING);
-
-		ViewButton button1 = new ViewButton();
+		ClickButton button1 = new ClickButton();
 		button1.setName("康复预约");
-		button1.setType(ButtonTypeConstant.BUTTON_VIEW);
-		button1.setUrl("http://www.ebanghu.com/patient/weChatLogin/login");
+		button1.setType(ButtonTypeConstant.BUTTON_CLICK);
+		button1.setKey(ButtonKeyConstants.V001_BUTTON_BOOKING);
+
+//		ViewButton button1 = new ViewButton();
+//		button1.setName("康复预约");
+//		button1.setType(ButtonTypeConstant.BUTTON_VIEW);
+//		button1.setUrl("http://www.ebanghu.com/patient/weChatLogin/login");
 
 
 		// 菜单二
-		Button button2 = new Button();
+//		Button button2 = new Button();
+//		button2.setName("幸运礼包");
+
+//		ClickButton button2 = new ClickButton();
+//		button2.setName("幸运礼包");
+//		button2.setType(ButtonTypeConstant.BUTTON_CLICK);
+//		button2.setKey(ButtonKeyConstants.V001_BUTTON_LOGGERY);
+
+		ViewButton button2 = new ViewButton();
 		button2.setName("幸运礼包");
+		button2.setType(ButtonTypeConstant.BUTTON_VIEW);
+		button2.setUrl("http://mp.weixin.qq.com/s?__biz=MzIxNTIzMTYzMw==&mid=2648949468&idx=1&sn=a5158f5c0cdbe1c7911c0808eea55810&scene=1&srcid=0507kJTS5IxTVMjgBQJ6r5z1#wechat_redirect");
 
-		ClickButton clickButton21 = new ClickButton();
-		clickButton21.setName("抽奖活动");
-		clickButton21.setType(ButtonTypeConstant.BUTTON_CLICK);
-		clickButton21.setKey(ButtonKeyConstants.V001_BUTTON_LOGGERY);
-
-		button2.setSub_button(new Button[]{clickButton21});
+//		button2.setSub_button(new Button[]{clickButton21});
 
 		// 菜单三
 		Button button3 = new Button();
