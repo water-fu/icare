@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
  * 账户管理
  * Created by fusj on 16/3/14.
  */
-@Deprecated
 @Controller
 @RequestMapping("account")
 public class AccountController extends BaseController {

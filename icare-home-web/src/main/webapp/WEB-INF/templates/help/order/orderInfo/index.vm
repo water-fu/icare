@@ -5,23 +5,23 @@
     <div class="row">
         <div class="col-sm-12 paginationDiv">
             <div class="page-nav">
-                <a href="javascript:void(0);" class="last">用户管理</a>
+                <a href="javascript:void(0);" class="last">订单管理</a>
                 &gt;
-                <a href="javascript:void(0)" class="last">患者管理</a>
+                <a href="javascript:void(0)" class="last">订单信息</a>
 ##                <button class="reback" onclick="history.go(-1)"><i class="iconfont icon-left"></i>返回</button>
             </div>
             <!--search  area-->
             <div class="searchArea">
-                <form action="$!{CONTEXT_PATH}/accountPatient/list" method="post" id="searchForm">
+                <form action="$!{CONTEXT_PATH}/order/list" method="post" id="searchForm">
                     <div class="form-group">
                         <label>手机号码</label>
                         <input type="text" class="form-control" name="phoneNo" />
                     </div>
                     <div class="form-group">
-                        <label>用户状态</label>
+                        <label>订单状态</label>
                         <select name="status" class="form-control">
                             <option value="">全部</option>
-                            #foreach($param in $!{cache.getListByKey("ACCOUNT_STATUS")})
+                            #foreach($param in $!{cache.getListByKey("ORDER_STATUS")})
                             <option value="$!{param.pValue}">$!{param.pDesc}</option>
                             #end
                         </select>
@@ -140,66 +140,136 @@
     </div>
 </div>
 
-<div class="modal fade" id="detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
+<div class="modal fade" id="approve" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">患者认证信息</h4>
+                <h4 class="modal-title" id="myModalLabel">订单信息</h4>
             </div>
             <div class="modal-body">
                 <div class="modal_wrap">
-                    <form id="detailForm">
+                    <form id="approveForm">
                         <input type="hidden" name="id" >
-                        <!--info table-->
-                        <table class="table table-bordered detailInfo">
-                            <tr>
-                                <td class="col-sm-2">姓名<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name" />
-                                </td>
-                                <td class="col-sm-2">身份证号码<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="idCode" />
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-sm-2">年龄<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="age" />
-                                </td>
-                                <td class="col-sm-2">性别<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <select name="sex" class="form-control">
-                                        #foreach($param in $!{cache.getListByKey("SEX")})
-                                            <option value="$!{param.pValue}">$!{param.pDesc}</option>
-                                        #end
-                                    </select>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-sm-2">手持身份证头部照<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <img class="idPath" src="" alt="" data-toggle="modal" data-target="#pic" style="cursor:pointer;" title="查看大图" >
-                                </td>
-                                <td class="col-sm-2">半身照<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <img class="bodyPath" src="" alt="" data-toggle="modal" data-target="#pic" style="cursor:pointer;" title="查看大图">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="col-sm-2">审核意见<span class="star">*</span></td>
-                                <td class="col-sm-10" colspan="3">
-                                    <textarea rows="3" name="serviceExp" class="form-control validate[required]" placeholder="请填写审核意见..."></textarea>
-                                </td>
-                            </tr>
-                        </table>
+
+                        <ul id="myTab" class="nav nav-tabs" style="border-bottom: 0px;">
+                            <li class="active"><a href="#basicInfo" data-toggle="tab">基本信息</a></li>
+                            <li><a href="#link" data-toggle="tab">联系人信息</a></li>
+                            <li><a href="#date" data-toggle="tab">预约时间段</a></li>
+                            <li><a href="#diagnosis" data-toggle="tab">诊断证明</a></li>
+                        </ul>
+
+
+                        <div class="tab-content">
+                            <div class="tab-pane fade in active" id="basicInfo">
+                                <table class="table table-bordered detailInfo">
+                                    <tr>
+                                        <td class="col-sm-2">患者姓名<span class="star"></span></td>
+                                        <td class="col-sm-4">
+                                            <input type="text" name="patientName" id="patientName" class="form-control" placeholder="请输入" />
+                                        </td>
+                                        <td class="col-sm-2">患者年龄<span class="star"></span></td>
+                                        <td class="col-sm-4">
+                                            <input type="text" name="patientAge" id="patientAge" class="form-control" placeholder="请输入" />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-2">患者性别<span class="star"></span></td>
+                                        <td class="col-sm-4">
+                                            <select name="sex" class="form-control">
+                                                #foreach($param in $!{cache.getListByKey("SEX")})
+                                                    <option value="$!{param.pValue}">$!{param.pDesc}</option>
+                                                #end
+                                            </select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-2">地址<span class="star"></span></td>
+                                        <td class="col-sm-10" colspan="3">
+                                            <input type="text" name="address" class="form-control" placeholder="请输入详细地址"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-2">审核意见<span class="star">*</span></td>
+                                        <td class="col-sm-10" colspan="3">
+                                            <textarea rows="3" name="auditMsg" class="form-control validate[required]" placeholder="请填写审核意见..."></textarea>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="link">
+                                <table class="table table-bordered detailInfo">
+                                    <tr>
+                                        <td class="col-sm-2">联系人<span class="star"></span></td>
+                                        <td class="col-sm-4">
+                                            <input type="text" name="linkName" id="linkName" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                        <td class="col-sm-2">联系人电话<span class="star"></span></td>
+                                        <td class="col-sm-4">
+                                            <input type="text" name="linkPhone" id="linkPhone" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-2">与患者关系<span class="star"></span></td>
+                                        <td class="col-sm-10" colspan="3">
+                                            <select class="form-control" name="linkRelation">
+                                                <option value="1">本人</option>
+                                                <option value="2">父亲</option>
+                                                <option value="3">爷爷</option>
+                                            </select>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="date">
+                                <table class="table table-bordered detailInfo">
+                                    <tr>
+                                        <td class="col-sm-2">时间段1<span class="star"></span></td>
+                                        <td class="col-sm-5">
+                                            <input type="text" name="start0" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                        <td class="col-sm-5">
+                                            <input type="text" name="end0" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-2">时间段2<span class="star"></span></td>
+                                        <td class="col-sm-5">
+                                            <input type="text" name="start1" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                        <td class="col-sm-5">
+                                            <input type="text" name="end1" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-2">时间段3<span class="star"></span></td>
+                                        <td class="col-sm-5">
+                                            <input type="text" name="start2" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                        <td class="col-sm-5">
+                                            <input type="text" name="end2" class="form-control" placeholder="请输入"/>
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                            <div class="tab-pane fade" id="diagnosis">
+                                <table class="table table-bordered detailInfo">
+                                    <tr>
+                                        <td class="col-sm-2">诊断证明<span class="star"></span></td>
+                                        <td class="col-sm-10 filePathList">
+
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+
                     </form>
                 </div>
             </div>
             <div class="modal-footer border">
-                <button type="button" class="btn btn-success btn-baocun btn-audit"><i class="iconfont icon-shenhe"></i>审核通过</button>
-                <button type="button" class="btn btn-warning btn-baocun btn-audit"><i class="iconfont icon-chexiao"></i>审核不通过</button>
+                <button type="button" class="btn btn-success btn-baocun btn-audit" auditType="1"><i class="iconfont icon-shenhe"></i>审核通过</button>
+                <button type="button" class="btn btn-warning btn-baocun btn-audit" auditType="0"><i class="iconfont icon-chexiao"></i>审核不通过</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal"><i class="iconfont icon-cuowu"></i>取消</button>
             </div>
         </div>
@@ -218,73 +288,10 @@
     </div><!-- /.modal -->
 </div>
 
-<!--奖励人-->
-<div class="modal fade" id="reward" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-keyboard="false" data-backdrop="static">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">推荐人列表</h4>
-            </div>
-            <div class="modal-body">
-                <div class="modal_wrap">
-                    <form id="rewardForm">
-                        <!--info table-->
-                        <table class="table table-bordered detailInfo">
-                            <tr class="oneLevel">
-                                <th>一级推荐人</th>
-                            </tr>
-                            <tr class="oneLevel">
-                                <td class="col-sm-2">手机号码<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="phone_0" readonly />
-                                </td>
-                                <td class="col-sm-2">姓名<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name_0" readonly />
-                                </td>
-                            </tr>
-                            <tr class="twoLevel">
-                                <th>二级推荐人</th>
-                            </tr>
-                            <tr class="twoLevel">
-                                <td class="col-sm-2">手机号码<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="phone_1" readonly />
-                                </td>
-                                <td class="col-sm-2">姓名<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name_1" readonly />
-                                </td>
-                            </tr>
-                            <tr class="threeLevel">
-                                <th>三级推荐人</th>
-                            </tr>
-                            <tr class="threeLevel">
-                                <td class="col-sm-2">手机号码<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="phone_2" readonly />
-                                </td>
-                                <td class="col-sm-2">姓名<span class="star"></span></td>
-                                <td class="col-sm-4">
-                                    <input class="form-control" type="text" name="name_2" readonly />
-                                </td>
-                            </tr>
-                        </table>
-                    </form>
-                </div>
-            </div>
-            <div class="modal-footer border">
-                <button type="button" class="btn btn-default" data-dismiss="modal"><i class="iconfont icon-cuowu"></i>关闭</button>
-            </div>
-        </div>
-    </div>
-</div>
 
 <script type="text/javascript">
     $(function() {
         qryData('searchForm');
-        hideLevel();
 
         $('#add').on('show.bs.modal', function() {
             $('#addForm').validationEngine('hideAll');
@@ -393,28 +400,27 @@
             });
         });
 
-        // 患者信息按钮加载数据
-        $('#detail').on('show.bs.modal', function (el) {
-            $('#detailForm').validationEngine('hideAll');
-            $('#detailForm')[0].reset();
+        // 审批按钮加载数据
+        $('#approve').on('show.bs.modal', function (el) {
+            $('#approveForm').validationEngine('hideAll');
+            $('#approveForm')[0].reset();
 
+            $('#myTab a:first').tab('show');
             showMask();
 
-            $('#detailForm').find('input').attr('disabled', 'disabled');
-            $('#detailForm').find('select').attr('disabled', 'disabled');
-//            $('#detailForm').find('.star').html('');
-            $('#detailForm').find('img').css({'width': '150px', 'height': '80px'});
+            $('#approveForm').find('input').attr('disabled', 'disabled');
+            $('#approveForm').find('select').attr('disabled', 'disabled');
+
+            // id可用
+            $('#approveForm').find('input[name="id"]').removeAttr('disabled');
+
+            $('#approveForm').find('img').css({'width': '150px', 'height': '80px'});
 
             var invoker = $(el.relatedTarget);
 
             var id = invoker.attr('id');
-            var status = invoker.attr('status');
 
-            if(status == 3) {
-                $('.btn-audit').hide();
-            }
-
-            var url = base + '/patient/getAuditByAccountId?accountId=' + id;
+            var url = base + '/order/getOrderInfo?id=' + id;
             $.ajax({
                 url: url,
                 type: 'get',
@@ -426,19 +432,37 @@
                     if(data.flag) {
                         data = data.data;
 
-                        if(data.id) {
+                        var orderInfo = data.orderInfo;
+                        var orderBooking = data.orderBooking;
+                        var orderDateList = data.orderDateList.list;
+                        var filePathList = data.filePathList;
 
-                            $('#detailForm').find('input[name="id"]').val(data.id);
-                            $('#detailForm').find('input[name="name"]').val(data.name);
-                            $('#detailForm').find('select[name="sex"]').find('option[value=' + data.sex + ']').attr('selected', 'selected');
-                            $('#detailForm').find('input[name="age"]').val(data.age);
-                            $('#detailForm').find('input[name="idCode"]').val(data.idCode);
-                            $('#detailForm').find('img[class="idPath"]').attr('src', data.idPath);
-                            $('#detailForm').find('img[class="bodyPath"]').attr('src', data.bodyPath);
+                        $('#approveForm').find('input[name="id"]').val(orderInfo.id);
 
-                        } else {
-//                            $('#detailForm').find('input').removeAttr('disabled');
-//                            $('#detailForm').find('.star').html('*');
+                        // 基本信息
+                        $('#approveForm').find('input[name="patientName"]').val(orderBooking.patientName);
+                        $('#approveForm').find('select[name="patientSex"]').find('option[value=' + orderBooking.patientSex + ']').attr('selected', 'selected');
+                        $('#approveForm').find('input[name="patientAge"]').val(orderBooking.patientAge);
+                        $('#approveForm').find('input[name="address"]').val(orderBooking.address);
+
+                        // 联系人信息
+                        $('#approveForm').find('input[name="linkName"]').val(orderBooking.linkName);
+                        $('#approveForm').find('input[name="linkPhone"]').val(orderBooking.linkPhone);
+                        $('#approveForm').find('input[name="linkRelation"]').find('option[value=' + orderBooking.linkRelation + ']').attr('selected', 'selected');
+
+                        // 预约时间
+                        for(var i = 0; i < orderDateList.length; i++) {
+                            $('#approveForm').find('input[name="start' + i +'"]').val(orderDateList[i].startDate);
+                            $('#approveForm').find('input[name="end' + i +'"]').val(orderDateList[i].endDate);
+                        }
+
+                        // 诊断证明
+                        $('.filePathList').empty();
+                        for(var i = 0; i < filePathList.length; i++) {
+                            var img = $('<img style="width:70px; height: 40px; margin-top: 4px; margin-right: 2px;" data-toggle="modal" data-target="#pic" >');
+                            img.attr('src', filePathList[i]);
+
+                            $('.filePathList').append(img);
                         }
 
                         hideMask();
@@ -463,47 +487,30 @@
 
         // 审核
         $('.btn-audit').click(function() {
-            var flag = $('#detailForm').validationEngine('validate');
+            var flag = $('#approveForm').validationEngine('validate');
             if(!flag)
                 return;
 
+            var _this = $(this);
+            var type = _this.attr('auditType');
 
-        });
-
-        // 显示奖励层级
-        $('#reward').on('show.bs.modal', function(el) {
             showMask();
-            hideLevel();
 
-            var invoker = $(el.relatedTarget);
-            var id = invoker.attr('id');
-
-            var url = base + '/patient/getRewardId?id=' + id;
+            var url = base + '/order/approve?auditType=' + type;
             $.ajax({
                 url: url,
-                type: 'get',
+                data: $('#approveForm').serialize(),
+                type: 'post',
                 error : function (XMLHttpRequest, textStatus, errorThrown) {
                     alert('系统错误');
                     hideMask();
                 },
                 success : function (data, textStatus) {
                     if(data.flag) {
-                        data = data.data;
-
-                        for(var i = 0; i < data.length; i++) {
-                            if(i == 0) {
-                                $('.oneLevel').show();
-                            } else if (i == 1) {
-                                $('.twoLevel').show();
-                            } else if(i == 2) {
-                                $('.threeLevel').show();
-                            }
-
-                            $('#rewardForm').find('input[name="name_' + i + '"]').val(data[i].name);
-                            $('#rewardForm').find('input[name="phone_' + i + '"]').val(data[i].phoneNo);
-                        }
-
                         hideMask();
+                        $('#approve').modal('hide');
+
+                        qryData('searchForm');
                     } else {
                         hideMask();
                         alert(data.msg);
@@ -512,10 +519,4 @@
             });
         });
     });
-
-    function hideLevel() {
-        $('.oneLevel').hide();
-        $('.twoLevel').hide();
-        $('.threeLevel').hide();
-    }
 </script>
