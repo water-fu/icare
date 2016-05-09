@@ -10,6 +10,7 @@ import com.wisdom.dao.mapper.WeChatLoginMapper;
 import com.wisdom.encrypt.EncryptFactory;
 import com.wisdom.entity.PageInfo;
 import com.wisdom.entity.SessionDetail;
+import com.wisdom.entity.jackon.RewardList;
 import com.wisdom.exception.ApplicationException;
 import com.wisdom.service.user.IAccountService;
 import com.wisdom.util.DateUtil;
@@ -196,14 +197,16 @@ public class AccountServiceImpl implements IAccountService {
         // 判断和解析推荐人
         if(SysParamDetailConstant.IS_REWARD_TRUE.equals(account.getIsReward()) && StringUtil.isNotEmptyObject(key)) {
             // 奖励人列表
-            List<String> rewardList = new ArrayList<>();
+            List<RewardList.Reward> rewardList = new ArrayList<>();
 
             // 一级推荐人
             String parentId = EncryptFactory.getInstance(SysParamDetailConstant.AES).decodePassword(key, CommonConstant.SALT);
             int parentAccountId = Integer.parseInt(parentId);
             account.setParentId(parentAccountId);
 
-            rewardList.add(parentId);
+            RewardList.Reward reward = new RewardList.Reward();
+            reward.setRewardId(Integer.parseInt(parentId));
+            rewardList.add(reward);
 
             Account parentAccount = accountMapper.selectByPrimaryKey(parentAccountId);
             if(StringUtil.isNotEmptyObject(parentAccount.getParentId())) {
@@ -211,18 +214,25 @@ public class AccountServiceImpl implements IAccountService {
                 int ppAccountId = parentAccount.getParentId();
                 Account ppAccount = accountMapper.selectByPrimaryKey(ppAccountId);
 
-                rewardList.add(0, ppAccountId + "");
+                RewardList.Reward reward1 = new RewardList.Reward();
+                reward1.setRewardId(ppAccountId);
+                rewardList.add(0, reward1);
 
                 // 三级推荐人
                 if(StringUtil.isNotEmptyObject(ppAccount.getParentId())) {
                     int pppAccountId = ppAccount.getParentId();
 
-                    rewardList.add(0, pppAccountId + "");
+                    RewardList.Reward reward2 = new RewardList.Reward();
+                    reward2.setRewardId(pppAccountId);
+                    rewardList.add(0, reward2);
                 }
             }
 
             try {
-                account.setRewardId(JackonUtil.writeEntity2JSON(rewardList));
+                RewardList rewardResult = new RewardList();
+                rewardResult.setList(rewardList);
+
+                account.setRewardId(JackonUtil.writeEntity2JSON(rewardResult));
             } catch (Exception ex) {
                 throw new ApplicationException("设置推荐人异常");
             }
